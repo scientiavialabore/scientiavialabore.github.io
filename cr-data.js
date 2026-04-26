@@ -712,11 +712,15 @@ async function autoLoadCSVs(){
     } catch(e){ return null; }
   };
 
+   const base = window.location.pathname.endsWith('/') 
+  ? window.location.pathname 
+  : window.location.pathname + '/';
+
   let didLoad = false;
 
   // Questions — only auto-load if bank is empty
   if(!customBank.length){
-    const text = await tryFetch('./questions.csv');
+    const text = await tryFetch(base + 'questions.csv');
     if(text){
       try {
         const imported = csvToQuestions(text);
@@ -733,7 +737,7 @@ async function autoLoadCSVs(){
 
   // Vocab — only auto-load if bank is empty
   if(!vocabBank.length){
-    const text = await tryFetch('./vocab.csv');
+    const text = await tryFetch(base + 'vocab.csv');
     if(text){
       try {
         const imported = csvToVocab(text);
