@@ -742,6 +742,4 @@ async function autoLoadCSVs(){
 
   if (typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
 }
-  // Re-render hub widget if anything loaded
-  if(didLoad && typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
-}
+
