@@ -716,7 +716,7 @@ async function autoLoadCSVs(){
 
   // Questions — only auto-load if bank is empty
   if(!customBank.length){
-    const text = await tryFetch('questions.csv');
+    const text = await tryFetch('./questions.csv');
     if(text){
       try {
         const imported = csvToQuestions(text);
@@ -733,7 +733,7 @@ async function autoLoadCSVs(){
 
   // Vocab — only auto-load if bank is empty
   if(!vocabBank.length){
-    const text = await tryFetch('vocab.csv');
+    const text = await tryFetch('./vocab.csv');
     if(text){
       try {
         const imported = csvToVocab(text);
