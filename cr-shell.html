@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<!--
+
+/* ════════════════════════════════════════════════════════════════════
+   CHEMREVIEW — FEATURE ROADMAP & TO-DO LIST
+   Last updated: v12
+   ────────────────────────────────────────────────────────────────────
+   Dual lens: 👩‍🏫 Teacher (pedagogy) | 🎮 Student (engagement/fun)
+════════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 1 — QUESTION & CONTENT SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] XLSX direct import — let teacher import the Excel file directly
+    without needing to Save As CSV first. Avoids encoding errors.
+    (use SheetJS in the browser, already available as a CDN lib)
+
+[ ] Question previewer in Admin — click any question card and see
+    exactly how it will render in-game (with visuals, given box, etc.)
+    before students ever see it.
+
+[ ] Bulk enable/disable by chapter or topic — currently must toggle
+    one-by-one. Add "Enable All / Disable All" per chapter in Admin.
+
+[ ] Image support — allow a teacher to paste an image URL or upload
+    a base64 image into the question, displayed above the question
+    text. Column already exists (image_url) but not rendered in modal.
+    👩‍🏫 Critical for lab diagrams, spectra, graphs from textbooks.
+
+[ ] Answer explanation field — separate from step-by-step solution.
+    A one-sentence "why" shown immediately after wrong answers.
+    👩‍🏫 Corrective feedback is the highest-impact learning intervention.
+
+[ ] Question tagging & AP/IB standard alignment — already have
+    `standard` and `learning_objective` columns; surface these in
+    the Admin list and in the end-of-game report so teachers can see
+    which standards students are weak on.
+
+[ ] Distractor analysis for MC — track which wrong answer option
+    students pick most often. Surface in Session Report.
+    👩‍🏫 Tells teacher which misconceptions are most common.
+
+[ ] Randomizer/variant questions — numeric questions that generate
+    fresh numbers each attempt (e.g. Boyle's Law with random P1/V1/V2).
+    `randomizer_type` column already exists; build the engine.
+    🎮 Every attempt feels new; no memorising the answer.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 2 — PROGRESS TRACKING & SPACED REPETITION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Spaced repetition scheduler — after a question is answered
+    correctly, schedule it to re-appear after N days (1→3→7→14→30).
+    Show a "Due today" count on the hub. Uses localStorage timestamps.
+    👩‍🏫 The single most evidence-based learning technique. Huge win.
+
+[ ] Mastery badges per topic — once a student hits e.g. 80% correct
+    across all questions in a topic, award a ⭐ badge stored in
+    localStorage. Show on hub and planner.
+    🎮 Completion/collection mechanic — students want to fill the grid.
+
+[ ] Weekly streak calendar — GitHub-style contribution grid showing
+    days the student studied. Displayed on hub.
+    🎮 Habit-building through visual streak pressure.
+
+[ ] XP & level system — award XP for correct answers (more XP for
+    harder questions), wrong answers give a smaller amount for trying.
+    Show level progress bar on the hub. Never penalise for playing.
+    🎮 Core game loop motivation — something to grind toward.
+
+[ ] Personal bests — track best Jeopardy score, best Millionaire
+    level, fastest crossword, longest flashcard streak per topic.
+    Display on game end screens.
+    🎮 Students compete against themselves; natural replay motivation.
+
+[ ] Mistake notebook — auto-collected list of every question the
+    student got wrong, with the correct answer. Accessible from hub.
+    Can be exported as a PDF study sheet.
+    👩‍🏫 Students rarely review mistakes without a structured prompt.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 3 — NEW GAME MODES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] SPEED ROUND / BLITZ MODE 🎮
+    30 questions, 20 seconds each, no hints.
+    Score = correct answers × time bonus. Leaderboard at the end.
+    Pure adrenaline; great for review days before a test.
+
+[ ] TRUE / FALSE RAPID FIRE 🎮👩‍🏫
+    Show a statement, swipe or click True/False.
+    Surfaces common misconceptions efficiently.
+    Fast, mobile-friendly, works with any MC question rephrased.
+
+[ ] MATCHING PAIRS (Memory Game) 🎮
+    Flip cards to match term ↔ definition or formula ↔ name.
+    Uses vocab bank. 4×4 or 6×6 grid.
+    Classic memory game — low threat, high repetition.
+
+[ ] EQUATION BALANCER 👩‍🏫
+    Show an unbalanced equation, student drags coefficients.
+    Visual, tactile, directly tied to a core skill.
+
+[ ] PERIODIC TABLE QUIZ 🎮👩‍🏫
+    Click the element asked for (symbol, name, group, property).
+    Interactive SVG periodic table built into Visual Lab.
+    Landmark feature that no other review tool does as well.
+
+[ ] FILL IN THE BLANK 👩‍🏫
+    Show a sentence with one key term blanked. Type the answer.
+    Generates from vocab definitions automatically.
+    Bridges flashcards (recognition) → free recall.
+
+[ ] UNIT CONVERSION TRAINER 🎮👩‍🏫
+    Random conversion problems with a dimensional analysis scaffold.
+    Shows unit cancellation step-by-step when revealed.
+    Addresses one of the most commonly failed skill areas.
+
+[ ] FORMULA PUZZLE / FORMULA BUILDER 🎮
+    Given ions, drag and drop to build a correct ionic formula.
+    Or given a formula, identify correct name from 4 options.
+    Visual, interactive — works well on touchscreens.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 4 — UI / UX IMPROVEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Sound effects toggle — correct answer chime, wrong answer buzz,
+    Millionaire suspense music, Wheel spin sound.
+    🎮 Audio feedback dramatically increases engagement.
+    Keep it off by default with a 🔊 toggle in header.
+
+[ ] Confetti / celebration animation on perfect scores or milestone
+    achievements (first mastery badge, Millionaire win, etc.)
+    🎮 Moment of delight — students remember and talk about it.
+
+[ ] Dark / light mode toggle — currently dark-only.
+    Some students and teachers prefer light mode for classrooms.
+
+[ ] Mobile swipe gestures — swipe left/right on flashcards instead
+    of buttons. Swipe up = know, down = again.
+    🎮 Feels like a real app (Tinder-for-chemistry-facts).
+
+[ ] Keyboard shortcuts — number keys 1-4 for MC options, Enter to
+    submit, Space to flip flashcard, arrow keys to navigate.
+    👩‍🏫 Power users (and students who hate clicking) will love this.
+
+[ ] Jeopardy board: show topic/category label on answered cells
+    instead of just ✓/✗ so the board stays readable.
+
+[ ] Timer option for Jeopardy / Practice — optional countdown per
+    question (30s, 60s, 90s). Adds urgency without being punishing.
+    🎮 Time pressure = focus. Teacher can turn it off for assessments.
+
+[ ] Print / export study sheet — generate a clean printable PDF of
+    all questions in the selected topic with answer key.
+    👩‍🏫 For students who need paper copies or low-tech fallback.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 5 — TEACHER TOOLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Class progress dashboard (Teacher Mode) — separate password-
+    protected view. Students enter a class code; teacher sees
+    aggregate wrong-answer rates per question in real time.
+    Requires a tiny backend or Firebase; big lift but huge value.
+    👩‍🏫 Turns the game into a live formative assessment tool.
+
+[ ] Question difficulty auto-calibration — after N attempts across
+    students, auto-adjust the difficulty tag on a question based on
+    the actual wrong-answer rate. Surface to teacher.
+    👩‍🏫 Data-driven question quality improvement over time.
+
+[ ] Assignment mode — teacher selects a question set and generates
+    a shareable link/code. Students who load that code get exactly
+    those questions in Practice mode and can't skip.
+    👩‍🏫 Structured homework without a full LMS.
+
+[ ] AI question generator — teacher enters a topic/learning
+    objective, Claude API generates 5 draft questions in the correct
+    CSV format for review and import.
+    👩‍🏫 Cuts question authoring time from hours to minutes.
+    (We already have the Claude API integrated in the codebase!)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 6 — CSV / DATA FORMAT ADDITIONS NEEDED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  These columns should be added to questions.csv to support new features:
+
+  xp_value       — integer, XP awarded for a correct answer
+                   (default = pts/100, e.g. $400 → 4 XP)
+  time_limit     — integer seconds for timed mode (0 = no limit)
+  wordle_eligible — boolean, can this vocab word be used for Wordle?
+  true_false_stmt — string, the T/F statement version of this question
+  distractor_note — teacher note on why each wrong MC answer is wrong
+  image_url       — already exists; ensure all games render it
+  explanation     — one-sentence "why" shown after wrong answer
+                   (separate from the step-by-step sol_1..4)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SECTION 7 — POSSIBLY ONE DAY (BIG IDEAS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] LIVE MULTIPLAYER JEOPARDY / QUIZ BOWL
+    Teacher hosts a game, students join on their phones via a room
+    code (like Kahoot). First correct answer buzzes in.
+    Requires WebSockets (Socket.io) or a Firebase Realtime DB.
+    🎮 The dream feature. Students would beg to play this.
+
+[ ] BATTLE MODE (1v1 Async)
+    Challenge a classmate: both get the same 10 questions,
+    compare scores. Shareable result link.
+    Could work without a backend using URL-encoded state.
+    🎮 Social competition without needing real-time infrastructure.
+
+[ ] CHEMISTRY ESCAPE ROOM
+    A narrative wrapper: solve 5 questions in sequence to "escape"
+    a lab scenario. Wrong answer = locked out for 30 seconds.
+    Story context + puzzle pressure = deep engagement.
+    🎮 Students would stay after class to finish this.
+
+[ ] AI TUTOR CHAT (Claude API)
+    After a wrong answer, student can ask "why?" and get a
+    Socratic dialogue that guides them to the answer without
+    giving it away. Context-aware per question.
+    👩‍🏫 Personalised tutoring at scale. The future of ed-tech.
+    (We already have Claude API access in Artifacts!)
+
+[ ] ADAPTIVE LEARNING PATH
+    Based on performance data, auto-generate a recommended
+    daily study sequence: "You're weak on stoichiometry — here's
+    your 10-question set for today."
+    👩‍🏫 Personalised learning without teacher overhead.
+
+[ ] EXPORT TO ANKI / QUIZLET
+    One-click export of vocab + questions in Anki deck or
+    Quizlet format so students can study on other platforms too.
+
+[ ] CHEMISTRY SIMULATION LAB
+    Simple interactive simulations: titration, gas law sliders,
+    equilibrium. Connected to questions — answer a question,
+    see the concept animated in real time.
+    👩‍🏫 Conceptual understanding, not just memorisation.
+    (Visual Lab already has the canvas infrastructure for this!)
+
+[ ] VOICE INPUT MODE
+    Student speaks the answer out loud, speech-to-text transcribes.
+    Especially useful for formula names and element pronunciations.
+    🎮 Novel and fun; accessibility win.
+
+════════════════════════════════════════════════════════════════════
+   END OF ROADMAP
+════════════════════════════════════════════════════════════════════ */
+
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChemReview v1 — Chemistry Study Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0c14; --surf:#111827; --surf2:#1a2235; --surf3:#222f45;
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.18);
+  --text:#f0f4ff; --muted:#6b7a99;
+  --gold:#f5c842; --blue:#3d8bff; --blue2:#1a5fcc;
+  --green:#22c55e; --red:#ef4444; --cyan:#06b6d4;
+  --mono:'DM Mono',monospace; --sans:'DM Sans',sans-serif; --disp:'Bebas Neue',sans-serif;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(61,139,255,.12) 0%,transparent 70%),
+  radial-gradient(ellipse 40% 30% at 80% 80%,rgba(168,85,247,.08) 0%,transparent 60%);}
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* HUB */
+#hub-screen{align-items:center;justify-content:center;padding:40px 20px;gap:36px;}
+.hub-logo h1{font-family:var(--disp);font-size:clamp(3rem,8vw,5rem);letter-spacing:.05em;
+  background:linear-gradient(135deg,#f5c842 0%,#ff8c42 50%,#ff5f6d 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:4px;}
+.hub-logo p{color:var(--muted);font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;}
+.hub-tag{font-family:var(--mono);font-size:.68rem;color:var(--muted);border:1px solid var(--border2);
+  background:var(--surf);padding:4px 12px;border-radius:20px;display:inline-block;margin-top:8px;}
+.game-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:860px;}
+.game-card{width:188px;background:var(--surf);border:1px solid var(--border);border-radius:14px;
+  padding:24px 16px 18px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.game-card.available:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 0 28px rgba(245,200,66,.3);}
+.game-card.locked{opacity:.4;cursor:not-allowed;}
+.game-card.locked:hover{transform:none;border-color:var(--border);}
+.card-icon{font-size:2.5rem;margin-bottom:10px;}
+.card-name{font-family:var(--disp);font-size:1.3rem;letter-spacing:.05em;margin-bottom:5px;}
+.card-desc{font-size:.7rem;color:var(--muted);line-height:1.5;}
+.card-badge{position:absolute;top:9px;right:9px;font-size:.55rem;font-weight:700;padding:2px 6px;border-radius:8px;font-family:var(--mono);}
+.badge-ready{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.badge-soon{background:rgba(107,122,153,.12);color:var(--muted);border:1px solid rgba(107,122,153,.2);}
+.hub-btns{display:flex;gap:10px;}
+
+/* JEOPARDY */
+#jeopardy-screen{flex-direction:column;}
+.jeop-hdr{background:var(--surf);border-bottom:1px solid var(--border);padding:11px 20px;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.jeop-back{background:transparent;border:1px solid var(--border2);color:var(--muted);
+  padding:5px 12px;border-radius:7px;cursor:pointer;font-size:.75rem;transition:all .15s;}
+.jeop-back:hover{border-color:var(--text);color:var(--text);}
+.jeop-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.06em;color:var(--gold);line-height:1;}
+.jeop-sub{font-size:.68rem;color:var(--muted);font-family:var(--mono);}
+.jeop-spacer{flex:1;}
+.score-wrap{display:flex;align-items:baseline;gap:5px;}
+.score-lbl{font-size:.65rem;color:var(--muted);font-family:var(--mono);}
+.score-val{font-family:var(--disp);font-size:1.7rem;color:var(--gold);}
+.ctrl-btn{background:var(--surf2);border:1px solid var(--border2);color:var(--text);
+  padding:6px 13px;border-radius:7px;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s;}
+.ctrl-btn:hover{background:var(--blue);border-color:var(--blue);}
+.prog-bar{display:flex;gap:3px;flex-wrap:wrap;padding:8px 20px 0;}
+.prog-dot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:background .3s;}
+.prog-dot.ok{background:var(--green);}
+.prog-dot.no{background:var(--red);}
+.board-wrap{flex:1;padding:14px;overflow-y:auto;}
+.jeop-board{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;max-width:1080px;margin:0 auto;overflow-x:auto;}
+.cat-hdr{background:linear-gradient(135deg,#1a5fcc 0%,#0d3a80 100%);border:1px solid rgba(61,139,255,.4);
+  border-radius:var(--r);padding:10px 6px;text-align:center;font-family:var(--disp);
+  font-size:clamp(1rem,1.6vw,1.4rem);letter-spacing:.04em;color:#fff;min-height:65px;
+  display:flex;align-items:center;justify-content:center;line-height:1.25;white-space:normal;word-break:break-word;}
+.jeop-cell{border-radius:var(--r);min-height:76px;min-width:0;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;}
+.jeop-cell.open{background:linear-gradient(135deg,#1a2a5a 0%,#0f1c40 100%);border:1px solid rgba(61,139,255,.25);}
+.jeop-cell.open:hover{border-color:var(--gold);transform:scale(1.04);box-shadow:0 0 28px rgba(245,200,66,.3);z-index:2;}
+.jeop-cell.ok{background:linear-gradient(135deg,#14532d 0%,#052e16 100%);border:1px solid rgba(34,197,94,.4);}
+.jeop-cell.no{background:linear-gradient(135deg,#7f1d1d 0%,#450a0a 100%);border:1px solid rgba(239,68,68,.4);}
+.jeop-cell.ok:hover,.jeop-cell.no:hover{transform:scale(1.03);}
+.cell-pts{font-family:var(--disp);font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:.05em;color:var(--gold);}
+.cell-ico{font-size:1.8rem;}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;
+  align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:var(--surf);border:1px solid var(--border2);border-radius:18px;width:100%;
+  max-width:620px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;
+  animation:mIn .22s ease;box-shadow:0 24px 80px rgba(0,0,0,.7);}
+@keyframes mIn{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.modal-top{padding:18px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.modal-cat{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--cyan);margin-bottom:4px;}
+.modal-pts{font-family:var(--disp);font-size:2rem;color:var(--gold);letter-spacing:.05em;}
+.modal-x{background:transparent;border:1px solid var(--border2);color:var(--muted);width:30px;height:30px;
+  border-radius:7px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;transition:all .15s;}
+.modal-x:hover{color:var(--text);border-color:var(--text);}
+.modal-body{padding:14px 22px;}
+.modal-q{font-size:1rem;line-height:1.65;color:var(--text);margin-bottom:16px;}
+.modal-given{background:var(--surf2);border:1px solid var(--border2);border-radius:var(--r);
+  padding:10px 14px;margin-bottom:14px;font-family:var(--mono);font-size:.78rem;line-height:1.9;display:none;}
+.given-lbl{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.mc-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.mc-btn{background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;
+  padding:9px 13px;cursor:pointer;font-size:.86rem;text-align:left;color:var(--text);
+  font-family:var(--sans);transition:all .15s;display:flex;align-items:center;gap:10px;}
+.mc-btn:hover:not(:disabled):not(.sel){border-color:var(--blue);background:rgba(61,139,255,.07);}
+.mc-btn.sel{border-color:var(--gold);background:rgba(245,200,66,.1);color:var(--gold);}
+.mc-btn.ok{border-color:var(--green) !important;background:rgba(34,197,94,.1) !important;color:#4ade80 !important;}
+.mc-btn.no{border-color:var(--red) !important;background:rgba(239,68,68,.1) !important;color:#f87171 !important;}
+.mc-btn:disabled{cursor:default;}
+.mc-letter{font-family:var(--mono);font-size:.55rem;border:1px solid currentColor;border-radius:3px;padding:2px 4px;opacity:.6;flex-shrink:0;}
+.num-area{margin-bottom:14px;display:none;}
+.num-lbl{font-size:.68rem;color:var(--muted);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+.num-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);color:var(--text);
+  padding:9px 12px;border-radius:7px;font-family:var(--mono);font-size:.92rem;outline:none;transition:border-color .15s;}
+.num-input:focus{border-color:var(--blue);}
+.num-input.ok{border-color:var(--green);}
+.num-input.no{border-color:var(--red);}
+.num-input.warn{border-color:var(--gold);}
+.num-unit{font-size:.68rem;color:var(--muted);margin-top:3px;font-family:var(--mono);}
+.hint-box{display:none;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.25);
+  border-radius:var(--r);padding:10px 13px;margin-bottom:12px;font-size:.8rem;color:#fbbf24;line-height:1.6;}
+.hint-box.show{display:block;animation:fIn .2s ease;}
+.feedback{display:none;padding:9px 14px;border-radius:7px;font-weight:600;font-size:.86rem;margin-bottom:12px;text-align:center;}
+.feedback.ok{display:block;background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+.feedback.no{display:block;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+.feedback.warn{display:block;background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.sol-box{display:none;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.25);
+  border-radius:var(--r);padding:13px 15px;margin-bottom:12px;font-size:.8rem;line-height:1.8;}
+.sol-box.show{display:block;animation:fIn .2s ease;}
+.sol-hdr{font-family:var(--mono);font-size:.6rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;}
+.sol-step{display:flex;gap:7px;align-items:flex-start;margin-bottom:5px;}
+.step-n{font-family:var(--mono);font-size:.6rem;color:var(--cyan);background:rgba(6,182,212,.12);
+  border:1px solid rgba(6,182,212,.25);border-radius:3px;padding:1px 5px;flex-shrink:0;margin-top:2px;}
+@keyframes fIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+/* TRUE / FALSE RAPID FIRE */
+#tf-screen{flex-direction:column;}
+.tf-hdr{background:var(--surf);border-bottom:1px solid var(--border);padding:11px 20px;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.tf-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.06em;
+  background:linear-gradient(135deg,#fde047 0%,#facc15 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tf-score-strip{display:flex;align-items:baseline;gap:5px;margin-left:auto;}
+.tf-score-lbl{font-size:.62rem;color:var(--muted);font-family:var(--mono);}
+.tf-score-val{font-family:var(--disp);font-size:1.6rem;color:var(--green);}
+.tf-acc{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-left:12px;}
+#tf-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 16px;gap:16px;max-width:700px;margin:0 auto;width:100%;}
+.tf-meta{display:flex;align-items:center;gap:10px;width:100%;}
+.tf-progress{font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.tf-topic-lbl{font-family:var(--mono);font-size:.62rem;color:var(--cyan);
+  background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);border-radius:10px;padding:2px 8px;}
+.tf-streak-lbl{font-family:var(--disp);font-size:1rem;color:var(--gold);margin-left:auto;}
+.tf-timer-wrap{width:100%;height:7px;background:var(--surf2);border-radius:4px;overflow:hidden;}
+.tf-timer-bar{height:100%;width:100%;border-radius:4px;transition:background .2s;background:var(--green);}
+.tf-pts-badge{font-family:var(--disp);font-size:2.2rem;letter-spacing:.04em;color:var(--gold);
+  min-width:90px;text-align:center;}
+.tf-pts-gained{color:var(--green) !important;animation:tfPop .35s ease;}
+.tf-pts-zero{color:var(--muted) !important;}
+@keyframes tfPop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+.tf-card{background:var(--surf);border:1.5px solid var(--border2);border-radius:18px;
+  padding:32px 28px;width:100%;text-align:center;
+  opacity:0;transform:translateY(18px);transition:opacity .25s,transform .25s;}
+.tf-card.tf-card-in{opacity:1;transform:none;}
+.tf-card.tf-correct{border-color:var(--green);background:rgba(34,197,94,.07);}
+.tf-card.tf-wrong{border-color:var(--red);background:rgba(239,68,68,.07);}
+.tf-stmt{font-size:1.15rem;line-height:1.7;color:var(--text);font-weight:500;}
+.tf-btns{display:flex;gap:14px;width:100%;}
+.tf-btn{flex:1;padding:18px 0;border-radius:14px;border:2px solid;font-family:var(--disp);
+  font-size:1.6rem;letter-spacing:.07em;cursor:pointer;transition:all .15s;}
+.tf-true{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);color:var(--green);}
+.tf-true:hover:not(:disabled){background:rgba(34,197,94,.2);border-color:var(--green);transform:translateY(-2px);}
+.tf-false{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.4);color:var(--red);}
+.tf-false:hover:not(:disabled){background:rgba(239,68,68,.2);border-color:var(--red);transform:translateY(-2px);}
+.tf-btn:disabled{opacity:.5;cursor:default;transform:none;}
+.tf-btn-correct{background:rgba(34,197,94,.25) !important;border-color:var(--green) !important;
+  color:var(--green) !important;box-shadow:0 0 18px rgba(34,197,94,.3);}
+.tf-btn-wrong{background:rgba(239,68,68,.2) !important;border-color:var(--red) !important;color:var(--red) !important;}
+.tf-explanation{width:100%;padding:11px 16px;background:rgba(6,182,212,.06);
+  border:1px solid rgba(6,182,212,.25);border-radius:10px;font-size:.83rem;
+  line-height:1.6;color:var(--cyan);text-align:center;
+  opacity:0;transform:translateY(6px);}
+.tf-explanation.tf-expl-in{opacity:1;transform:none;transition:opacity .2s,transform .2s;}
+.tf-end{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:20px;}
+.tf-end-icon{font-size:3.5rem;}
+.tf-end-title{font-family:var(--disp);font-size:2.2rem;letter-spacing:.06em;color:var(--text);}
+.tf-end-score{font-family:var(--disp);font-size:3rem;letter-spacing:.05em;color:var(--green);}
+.tf-end-stats{display:flex;gap:28px;margin:8px 0;}
+.tf-end-stat{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.tf-end-stat-val{font-family:var(--disp);font-size:1.8rem;letter-spacing:.04em;}
+.tf-end-stat-lbl{font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+.tf-end-btns{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;justify-content:center;}
+.tf-play-again{background:linear-gradient(135deg,#fde047,#facc15);border:none;color:#000;
+  padding:13px 28px;border-radius:10px;font-family:var(--disp);font-size:1.2rem;letter-spacing:.05em;
+  cursor:pointer;transition:transform .15s,opacity .15s;}
+.tf-play-again:hover{transform:translateY(-2px);opacity:.9;}
+.tf-back-hub{background:var(--surf2);border:1px solid var(--border2);color:var(--text);
+  padding:13px 28px;border-radius:10px;font-family:var(--disp);font-size:1.2rem;letter-spacing:.05em;
+  cursor:pointer;transition:all .15s;}
+.tf-back-hub:hover{border-color:var(--text);}
+
+/* SIG FIG POPUP */
+#sf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px;}
+#sf-overlay.open{display:flex;}
+.sf-box{background:var(--surf);border:2px solid var(--gold);border-radius:14px;padding:26px 24px 20px;max-width:440px;width:100%;box-shadow:0 0 40px rgba(245,200,66,.2);animation:fIn .2s ease;}
+.sf-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.05em;color:var(--gold);margin-bottom:10px;}
+.sf-body{font-size:.85rem;line-height:1.8;color:var(--text);margin-bottom:18px;white-space:pre-line;}
+.sf-rules{background:var(--surf2);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:.78rem;font-family:var(--mono);color:var(--cyan);line-height:1.9;margin-bottom:18px;}
+.sf-ok{background:var(--gold);border:none;border-radius:7px;padding:9px 24px;font-family:var(--sans);font-weight:700;font-size:.84rem;color:#000;cursor:pointer;transition:background .15s;}
+.sf-ok:hover{background:#e8a800;}
+.modal-foot{padding:10px 22px 18px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--border);}
+.m-btn{padding:8px 16px;border-radius:7px;font-size:.76rem;font-family:var(--sans);font-weight:600;cursor:pointer;transition:all .15s;border:1px solid;}
+.m-hint{background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.3);color:var(--gold);}
+.m-hint:hover{background:rgba(245,200,66,.18);}
+.m-submit{background:var(--blue);border-color:var(--blue);color:#fff;}
+.m-submit:hover{background:#2a70e8;}
+.m-submit:disabled{opacity:.4;cursor:not-allowed;}
+.m-sol{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);}
+.m-sol:hover{background:rgba(6,182,212,.18);}
+.m-close{background:transparent;border-color:var(--border2);color:var(--muted);margin-left:auto;}
+.m-close:hover{border-color:var(--text);color:var(--text);}
+
+/* END */
+.end-wrap{text-align:center;max-width:480px;margin:auto;padding:56px 20px;}
+.end-title{font-family:var(--disp);font-size:3.2rem;letter-spacing:.06em;color:var(--gold);margin-bottom:6px;}
+.end-score{font-family:var(--disp);font-size:1.9rem;color:var(--text);margin-bottom:22px;}
+.end-stats{display:flex;gap:14px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+.end-stat{background:var(--surf);border:1px solid var(--border2);border-radius:11px;padding:14px 22px;}
+.end-val{font-family:var(--disp);font-size:1.9rem;}
+.end-val.g{color:var(--green);}
+.end-val.r{color:var(--red);}
+.end-lbl{font-size:.65rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+.end-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;}
+.e-btn{padding:11px 26px;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s;border:1px solid;}
+.e-pri{background:var(--gold);border-color:var(--gold);color:#000;}
+.e-pri:hover{background:#e8a800;}
+.e-sec{background:transparent;border-color:var(--border2);color:var(--text);}
+.e-sec:hover{border-color:var(--text);}
+
+/* ADMIN */
+#admin-screen{flex-direction:column;min-height:100vh;}
+.admin-hdr{background:var(--surf);border-bottom:1px solid var(--border);padding:12px 24px;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.admin-hdr-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.06em;color:var(--gold);}
+.admin-tabs{display:flex;gap:0;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:3px;margin-left:auto;}
+.a-tab{padding:6px 16px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;}
+.a-tab.on{background:var(--surf2);color:var(--text);}
+.admin-body{flex:1;overflow-y:auto;padding:20px 24px;}
+.q-list-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.q-filter{background:var(--surf2);border:1px solid var(--border2);color:var(--text);border-radius:7px;padding:6px 10px;font-family:var(--mono);font-size:.72rem;outline:none;}
+.q-filter:focus{border-color:var(--blue);}
+.q-count{font-size:.72rem;color:var(--muted);font-family:var(--mono);}
+.q-cards{display:flex;flex-direction:column;gap:8px;}
+.q-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;}
+.q-card:hover{border-color:var(--border2);}
+.q-card-left{flex:1;min-width:0;}
+.q-card-meta{display:flex;gap:7px;align-items:center;margin-bottom:5px;flex-wrap:wrap;}
+.qbadge{font-family:var(--mono);font-size:.58rem;padding:2px 7px;border-radius:5px;}
+.qb-cat{background:rgba(61,139,255,.15);color:var(--blue);border:1px solid rgba(61,139,255,.3);}
+.qb-pts{background:rgba(245,200,66,.12);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.qb-type{background:rgba(6,182,212,.12);color:var(--cyan);border:1px solid rgba(6,182,212,.3);}
+.qb-gen{background:rgba(168,85,247,.12);color:#c084fc;border:1px solid rgba(168,85,247,.3);}
+.qb-builtin{font-family:var(--mono);font-size:.56rem;color:var(--muted);}
+.q-text{font-size:.82rem;color:var(--text);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.q-card-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
+.qa-btn{padding:4px 10px;border-radius:5px;font-size:.65rem;font-weight:600;cursor:pointer;border:1px solid;transition:all .15s;white-space:nowrap;}
+.qa-edit{background:transparent;border-color:var(--border2);color:var(--muted);}
+.qa-edit:hover{border-color:var(--blue);color:var(--blue);}
+.qa-del{background:transparent;border-color:rgba(239,68,68,.2);color:rgba(239,68,68,.6);}
+.qa-del:hover{border-color:var(--red);color:var(--red);}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted);}
+
+/* ADD/EDIT FORM */
+.q-form{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.form-row{display:grid;gap:12px;margin-bottom:12px;}
+.form-row.c2{grid-template-columns:1fr 1fr;}
+.form-row.c3{grid-template-columns:1fr 1fr 1fr;}
+.form-row.c1{grid-template-columns:1fr;}
+.f-label{display:block;font-size:.66rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.f-input,.f-select,.f-textarea{width:100%;background:var(--bg);border:1px solid var(--border2);color:var(--text);
+  border-radius:7px;padding:8px 11px;font-family:var(--sans);font-size:.84rem;outline:none;transition:border-color .15s;}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--blue);}
+.f-textarea{resize:vertical;min-height:70px;line-height:1.5;}
+.f-select option{background:var(--bg);}
+.sec-title{font-size:.7rem;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.sec-hint{font-size:.65rem;color:var(--muted);margin-left:8px;font-weight:400;text-transform:none;letter-spacing:0;}
+.form-section{margin-bottom:18px;}
+.mc-builder{display:flex;flex-direction:column;gap:6px;}
+.mc-opt-row{display:flex;gap:7px;align-items:center;}
+.mc-opt-inp{flex:1;background:var(--bg);border:1px solid var(--border2);color:var(--text);
+  border-radius:6px;padding:7px 10px;font-size:.82rem;outline:none;transition:border-color .15s;}
+.mc-opt-inp:focus{border-color:var(--blue);}
+.mc-opt-inp.is-ans{border-color:var(--green);background:rgba(34,197,94,.05);}
+.mark-btn{padding:4px 9px;border-radius:5px;font-size:.62rem;font-weight:600;cursor:pointer;border:1px solid;white-space:nowrap;transition:all .15s;}
+.mark-btn.marked{background:rgba(34,197,94,.15);border-color:var(--green);color:var(--green);}
+.mark-btn.unmarked{background:transparent;border-color:var(--border2);color:var(--muted);}
+.mark-btn:hover{border-color:var(--green);color:var(--green);}
+.x-btn{width:24px;height:24px;border-radius:5px;border:1px solid rgba(239,68,68,.3);background:transparent;
+  color:rgba(239,68,68,.6);cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.x-btn:hover{border-color:var(--red);color:var(--red);}
+.add-row-btn{padding:5px 12px;border-radius:5px;border:1px dashed var(--border2);background:transparent;
+  color:var(--muted);font-size:.7rem;cursor:pointer;transition:all .15s;align-self:flex-start;margin-top:4px;}
+.add-row-btn:hover{border-color:var(--blue);color:var(--blue);}
+.steps-builder{display:flex;flex-direction:column;gap:5px;}
+.step-row{display:flex;gap:7px;align-items:flex-start;}
+.step-ta{flex:1;background:var(--bg);border:1px solid var(--border2);color:var(--text);
+  border-radius:6px;padding:6px 9px;font-size:.8rem;outline:none;resize:none;min-height:36px;
+  font-family:var(--sans);line-height:1.4;transition:border-color .15s;}
+.step-ta:focus{border-color:var(--blue);}
+.step-del{width:24px;height:24px;border-radius:5px;border:1px solid rgba(239,68,68,.3);background:transparent;
+  color:rgba(239,68,68,.6);cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:6px;}
+.step-del:hover{border-color:var(--red);color:var(--red);}
+.given-row{display:flex;gap:7px;margin-bottom:6px;align-items:center;}
+.given-row .f-input{padding:7px 10px;font-size:.82rem;}
+.form-footer{display:flex;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);align-items:center;}
+.form-save{background:var(--blue);border:none;border-radius:7px;color:#fff;padding:9px 22px;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .15s;}
+.form-save:hover{background:#2a70e8;}
+.form-cancel{background:transparent;border:1px solid var(--border2);border-radius:7px;color:var(--muted);padding:9px 16px;font-size:.82rem;cursor:pointer;transition:all .15s;}
+.form-cancel:hover{border-color:var(--text);color:var(--text);}
+.form-msg{font-size:.75rem;color:var(--green);font-family:var(--mono);display:none;align-items:center;}
+
+/* SELECTOR SCREEN */
+#selector-screen{flex-direction:column;align-items:center;padding:0 0 60px;}
+.sel-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.sel-hdr-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.06em;color:var(--gold);}
+.sel-body{width:100%;max-width:820px;padding:28px 20px 0;}
+.sel-ch-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;margin-top:28px;}
+.sel-ch-head:first-child{margin-top:0;}
+.sel-ch-icon{font-size:2rem;}
+.sel-ch-label{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);}
+.sel-ch-name{font-family:var(--disp);font-size:1.5rem;letter-spacing:.05em;color:var(--text);}
+.sel-topics{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+.sel-topic-btn{background:var(--surf);border:2px solid var(--border2);border-radius:14px;
+  padding:18px 22px;cursor:pointer;text-align:center;min-width:160px;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:6px;}
+.sel-topic-btn:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,.4);}
+.sel-topic-icon{font-size:1.8rem;}
+.sel-topic-label{font-family:var(--disp);font-size:1.1rem;letter-spacing:.04em;color:var(--text);}
+.sel-topic-count{font-family:var(--mono);font-size:.6rem;color:var(--muted);}
+.sel-coming{opacity:.35;cursor:not-allowed;}
+.sel-coming:hover{transform:none;box-shadow:none;}
+
+/* ── CROSSWORD ── */
+#cw-screen{flex-direction:column;}
+.cw-hdr{background:var(--surf);border-bottom:1px solid var(--border);padding:11px 20px;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.cw-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.06em;color:var(--gold);}
+.cw-body{flex:1;display:flex;gap:0;overflow:hidden;}
+.cw-grid-wrap{flex:0 0 auto;padding:16px;overflow:auto;}
+.cw-grid{display:inline-grid;gap:2px;background:var(--bg);}
+.cw-cell{width:34px;height:34px;position:relative;background:var(--surf2);
+  border:1px solid var(--border2);border-radius:3px;display:flex;align-items:center;justify-content:center;}
+.cw-cell.black{background:#000;border-color:#000;}
+.cw-cell.correct{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5);}
+.cw-cell.wrong{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);}
+.cw-cell.active{border-color:var(--gold);background:rgba(245,200,66,.1);}
+.cw-cell.word-hi{border-color:var(--blue);background:rgba(61,139,255,.1);}
+.cw-cell input{position:absolute;inset:0;width:100%;height:100%;background:transparent;border:none;
+  text-align:center;font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--text);
+  text-transform:uppercase;outline:none;caret-color:transparent;cursor:default;padding:0;}
+.cw-num{position:absolute;top:1px;left:2px;font-family:var(--mono);font-size:.45rem;
+  color:var(--muted);line-height:1;pointer-events:none;z-index:2;}
+.cw-clues{flex:1;overflow-y:auto;padding:16px 20px;min-width:260px;max-width:380px;}
+.cw-clue-section{margin-bottom:20px;}
+.cw-clue-head{font-family:var(--disp);font-size:1rem;letter-spacing:.06em;color:var(--gold);
+  margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.cw-clue{display:flex;gap:8px;padding:5px 7px;border-radius:6px;cursor:pointer;
+  font-size:.78rem;line-height:1.45;transition:background .12s;color:var(--muted);}
+.cw-clue:hover{background:var(--surf2);}
+.cw-clue.active{background:rgba(61,139,255,.1);color:var(--text);}
+.cw-clue.solved{color:var(--green);}
+.cw-clue-num{font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--blue);
+  flex-shrink:0;width:20px;padding-top:1px;}
+.cw-footer{background:var(--surf);border-top:1px solid var(--border);padding:10px 20px;
+  display:flex;gap:10px;align-items:center;flex-shrink:0;}
+.cw-stat{font-family:var(--mono);font-size:.7rem;color:var(--muted);}
+.cw-stat span{color:var(--text);}
+
+/* ── FLASHCARDS ── */
+#fc-screen{flex-direction:column;align-items:center;}
+.fc-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);padding:11px 20px;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.fc-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.06em;color:var(--gold);}
+.fc-body{flex:1;width:100%;max-width:680px;padding:28px 20px;display:flex;flex-direction:column;
+  align-items:center;gap:20px;}
+.fc-progress-row{display:flex;gap:10px;align-items:center;width:100%;}
+.fc-prog-track{flex:1;height:7px;background:var(--surf2);border-radius:4px;overflow:hidden;}
+.fc-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:4px;transition:width .4s;}
+.fc-prog-label{font-family:var(--mono);font-size:.65rem;color:var(--muted);white-space:nowrap;}
+.fc-card-wrap{width:100%;perspective:1000px;cursor:pointer;height:220px;}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,0,.2,1);}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 32px;text-align:center;}
+.fc-front{background:linear-gradient(135deg,var(--surf) 0%,var(--surf2) 100%);
+  border:2px solid var(--border2);}
+.fc-back{background:linear-gradient(135deg,#0d2a50 0%,#1a1235 100%);
+  border:2px solid var(--blue);transform:rotateY(180deg);}
+.fc-face-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--muted);margin-bottom:12px;}
+.fc-word{font-family:var(--disp);font-size:2.4rem;letter-spacing:.06em;color:var(--text);}
+.fc-def{font-size:.92rem;line-height:1.65;color:var(--text);}
+.fc-tap-hint{font-family:var(--mono);font-size:.58rem;color:var(--muted);margin-top:10px;}
+.fc-controls{display:flex;gap:10px;width:100%;justify-content:center;flex-wrap:wrap;}
+.fc-btn{padding:10px 22px;border-radius:9px;font-family:var(--sans);font-weight:700;font-size:.82rem;
+  cursor:pointer;transition:all .15s;border:1px solid;}
+.fc-btn-know{background:rgba(34,197,94,.1);border-color:var(--green);color:var(--green);}
+.fc-btn-know:hover{background:rgba(34,197,94,.22);}
+.fc-btn-again{background:rgba(239,68,68,.1);border-color:var(--red);color:var(--red);}
+.fc-btn-again:hover{background:rgba(239,68,68,.22);}
+.fc-btn-skip{background:transparent;border-color:var(--border2);color:var(--muted);}
+.fc-btn-skip:hover{border-color:var(--text);color:var(--text);}
+.fc-btn-flip{background:rgba(61,139,255,.1);border-color:var(--blue);color:var(--blue);}
+.fc-btn-flip:hover{background:rgba(61,139,255,.22);}
+.fc-results{text-align:center;padding:20px 0;}
+.fc-results-title{font-family:var(--disp);font-size:2rem;color:var(--gold);letter-spacing:.05em;margin-bottom:8px;}
+.fc-results-sub{font-size:.9rem;color:var(--muted);margin-bottom:24px;}
+.fc-dot-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;}
+.fc-dot{width:10px;height:10px;border-radius:50%;}
+.fc-dot.k{background:var(--green);}
+.fc-dot.a{background:var(--red);}
+.fc-dot.s{background:var(--muted);}
+
+/* ── SHARED SELECTORS (reused for cw + fc) ── */
+#cw-sel-screen,#fc-sel-screen{flex-direction:column;align-items:center;padding:0 0 60px;}
+
+/* ── VISUAL QUESTION PANEL ── */
+.modal-visual{background:var(--surf2);border:1px solid var(--border2);border-radius:var(--r);
+  padding:12px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.modal-visual canvas{border-radius:6px;max-width:100%;display:block;}
+.visual-caption{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-align:center;
+  letter-spacing:.06em;}
+.ra-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.ra-table th{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--border2);text-align:left;}
+.ra-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.ra-table tr:hover td{background:var(--surf2);}
+.ra-topic-name{font-weight:600;color:var(--text);}
+.ra-cat-list{font-size:.68rem;color:var(--muted);font-family:var(--mono);}
+.ra-ch-sel{background:var(--bg);border:1px solid var(--border2);color:var(--text);
+  border-radius:6px;padding:5px 8px;font-size:.78rem;outline:none;transition:border-color .15s;
+  max-width:220px;width:100%;}
+.ra-ch-sel:focus{border-color:var(--blue);}
+.ra-ch-sel.changed{border-color:var(--gold);}
+.ra-count{font-family:var(--mono);font-size:.65rem;color:var(--cyan);}
+.ra-new-ch-row{display:none;margin-top:10px;background:var(--surf2);border:1px solid var(--border2);
+  border-radius:8px;padding:14px 16px;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+.ra-new-ch-row.show{display:flex;}
+.ra-new-ch-row .f-label{font-size:.62rem;}
+.ra-new-ch-row .f-input{padding:6px 9px;font-size:.8rem;}
+
+@media(max-width:700px){
+  .jeop-board{grid-template-columns:repeat(4,1fr);}
+  .form-row.c2,.form-row.c3{grid-template-columns:1fr;}
+  .sel-topics{flex-direction:column;}
+  .cw-body{flex-direction:column;}
+  .cw-clues{max-width:100%;min-width:0;}
+  .cw-cell{width:28px;height:28px;}
+  .cw-cell input{font-size:.75rem;}
+}
+/* ── MILLIONAIRE ── */
+#mil-sel-screen{flex-direction:column;align-items:center;padding:0 0 60px;}
+#mil-screen{flex-direction:column;background:#080818;min-height:100vh;}
+.mil-hdr{background:rgba(0,0,0,.6);border-bottom:1px solid rgba(255,215,0,.15);
+  padding:10px 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.mil-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.08em;
+  background:linear-gradient(135deg,#f5c842,#ff8c42);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;}
+.mil-winnings{font-family:var(--mono);font-size:.72rem;color:var(--gold);}
+
+.mil-body{flex:1;display:grid;grid-template-columns:1fr 220px;gap:0;overflow:hidden;}
+@media(max-width:700px){.mil-body{grid-template-columns:1fr;}}
+
+.mil-question-area{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:28px 24px;gap:20px;}
+
+.mil-q-box{background:rgba(0,0,40,.8);border:2px solid rgba(100,180,255,.3);
+  border-radius:16px;padding:22px 26px;max-width:680px;width:100%;text-align:center;
+  position:relative;}
+.mil-q-box::before{content:'';position:absolute;inset:-2px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(88,166,255,.2),rgba(255,215,0,.1));
+  z-index:-1;}
+.mil-level-badge{font-family:var(--mono);font-size:.6rem;color:var(--gold);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.mil-q-text{font-size:1.05rem;font-weight:600;line-height:1.6;color:#fff;}
+
+.mil-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:680px;width:100%;}
+.mil-opt{padding:13px 18px;border:2px solid rgba(88,166,255,.4);border-radius:12px;
+  background:rgba(0,0,60,.7);color:#e8f4ff;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:all .18s;text-align:left;display:flex;align-items:center;gap:10px;
+  position:relative;}
+.mil-opt:hover:not(:disabled){border-color:var(--gold);background:rgba(40,30,0,.8);color:var(--gold);}
+.mil-opt:disabled{cursor:default;}
+.mil-opt.eliminated{opacity:.18;pointer-events:none;}
+.mil-opt.friend-check::after{content:'✓';position:absolute;right:12px;top:50%;
+  transform:translateY(-50%);color:var(--gold);font-size:1rem;font-weight:900;}
+.mil-opt.selected{border-color:var(--gold);background:rgba(60,45,0,.9);color:var(--gold);}
+.mil-opt.correct{border-color:var(--green) !important;background:rgba(0,60,20,.9) !important;color:#4ade80 !important;}
+.mil-opt.wrong{border-color:var(--red) !important;background:rgba(60,0,0,.9) !important;color:#f87171 !important;}
+.mil-opt-letter{font-family:var(--mono);font-size:.6rem;border:1px solid currentColor;
+  border-radius:50%;width:22px;height:22px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;opacity:.7;}
+
+.mil-num-area{max-width:680px;width:100%;display:none;}
+.mil-num-input{width:100%;background:rgba(0,0,40,.8);border:2px solid rgba(88,166,255,.4);
+  color:#fff;border-radius:12px;padding:14px 18px;font-family:var(--mono);
+  font-size:1.1rem;outline:none;text-align:center;transition:border-color .2s;}
+.mil-num-input:focus{border-color:var(--gold);}
+.mil-num-input.ok{border-color:var(--green);}
+.mil-num-input.no{border-color:var(--red);}
+.mil-num-unit{font-family:var(--mono);font-size:.65rem;color:var(--muted);
+  text-align:center;margin-top:6px;}
+
+.mil-lifelines{display:flex;gap:10px;max-width:680px;width:100%;flex-wrap:wrap;
+  justify-content:center;}
+.mil-ll{padding:8px 16px;border:1.5px solid rgba(255,215,0,.4);border-radius:30px;
+  background:rgba(40,30,0,.6);color:var(--gold);font-size:.78rem;font-weight:700;
+  cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:6px;}
+.mil-ll:hover:not(:disabled){background:rgba(80,60,0,.8);border-color:var(--gold);}
+.mil-ll:disabled{opacity:.25;cursor:not-allowed;}
+.mil-ll.used{opacity:.2;cursor:not-allowed;text-decoration:line-through;}
+
+.mil-action-row{display:flex;gap:10px;max-width:680px;width:100%;justify-content:center;}
+.mil-submit{padding:12px 32px;border:2px solid var(--gold);border-radius:30px;
+  background:linear-gradient(135deg,rgba(80,60,0,.9),rgba(40,30,0,.9));
+  color:var(--gold);font-family:var(--mono);font-size:.78rem;font-weight:700;
+  cursor:pointer;transition:all .18s;letter-spacing:.05em;}
+.mil-submit:hover{background:linear-gradient(135deg,rgba(120,90,0,.9),rgba(80,60,0,.9));}
+.mil-submit:disabled{opacity:.3;cursor:not-allowed;}
+.mil-walkaway{padding:12px 24px;border:1.5px solid rgba(255,255,255,.2);border-radius:30px;
+  background:transparent;color:var(--muted);font-size:.78rem;cursor:pointer;transition:all .18s;}
+.mil-walkaway:hover{border-color:var(--text);color:var(--text);}
+
+.mil-feedback{font-family:var(--mono);font-size:.75rem;text-align:center;
+  padding:8px 16px;border-radius:8px;max-width:680px;width:100%;min-height:36px;}
+.mil-feedback.ok{color:#4ade80;background:rgba(0,60,20,.6);border:1px solid rgba(34,197,94,.3);}
+.mil-feedback.no{color:#f87171;background:rgba(60,0,0,.6);border:1px solid rgba(239,68,68,.3);}
+.mil-feedback.warn{color:var(--gold);background:rgba(60,45,0,.6);border:1px solid rgba(245,200,66,.3);}
+
+/* Prize ladder sidebar */
+.mil-ladder{background:rgba(0,0,20,.9);border-left:1px solid rgba(100,180,255,.1);
+  overflow-y:auto;padding:12px 0;}
+.mil-rung{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 16px;font-family:var(--mono);font-size:.65rem;color:var(--muted);
+  transition:all .2s;border-left:3px solid transparent;}
+.mil-rung.current{color:var(--gold);background:rgba(40,30,0,.5);
+  border-left-color:var(--gold);font-weight:700;}
+.mil-rung.safe{color:var(--green);}
+.mil-rung.completed{color:#666;}
+.mil-rung-val{font-weight:700;}
+.mil-safe-marker{font-size:.55rem;color:var(--green);margin-left:4px;}
+
+/* Millionaire end screen */
+.mil-end{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:60vh;padding:40px 20px;text-align:center;gap:16px;}
+.mil-end-icon{font-size:4rem;}
+.mil-end-title{font-family:var(--disp);font-size:2.5rem;letter-spacing:.06em;
+  background:linear-gradient(135deg,#f5c842,#ff8c42);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;}
+.mil-end-won{font-family:var(--disp);font-size:3rem;color:var(--gold);}
+.mil-end-sub{font-size:.9rem;color:var(--muted);max-width:420px;line-height:1.7;}
+.mil-end-btns{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;justify-content:center;}
+
+@media(max-width:700px){
+  .mil-options{grid-template-columns:1fr;}
+  .mil-body{grid-template-columns:1fr;}
+  .mil-ladder{display:none;}
+}
+
+/* ── WHEEL OF FORTUNE / HANGMAN ── */
+#wof-sel-screen{flex-direction:column;align-items:center;padding:0 0 60px;}
+#wof-screen{flex-direction:column;background:linear-gradient(160deg,#0a0818 0%,#0d1a30 100%);min-height:100vh;}
+
+.wof-hdr{background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,100,180,.15);
+  padding:10px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.wof-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.08em;
+  background:linear-gradient(135deg,#ff6eb4,#ffd700,#00e5ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* Toggles bar */
+.wof-toggles{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto;}
+.wof-toggle-group{display:flex;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:3px;gap:0;}
+.wof-tog{padding:5px 14px;border-radius:18px;font-family:var(--mono);font-size:.6rem;
+  cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .18s;white-space:nowrap;}
+.wof-tog.active{background:rgba(255,215,0,.2);color:var(--gold);font-weight:700;}
+.wof-tog.active-blue{background:rgba(88,166,255,.2);color:var(--blue);font-weight:700;}
+.wof-tog.active-pink{background:rgba(255,110,180,.2);color:#ff6eb4;font-weight:700;}
+
+/* Main layout */
+.wof-body{flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:18px 16px;gap:16px;overflow-y:auto;}
+
+/* Clue box */
+.wof-clue{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:12px 20px;max-width:680px;width:100%;text-align:center;
+  font-size:.88rem;color:var(--muted);line-height:1.6;}
+.wof-clue strong{color:var(--text);}
+
+/* Letter board — the word display */
+.wof-board{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  max-width:720px;width:100%;}
+.wof-tile{width:36px;height:44px;border-bottom:3px solid rgba(255,215,0,.6);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;
+  font-family:var(--mono);font-size:1.2rem;font-weight:700;color:#fff;
+  transition:all .2s;position:relative;}
+.wof-tile.space{border-bottom-color:transparent;width:20px;}
+.wof-tile.revealed{color:#ffd700;}
+.wof-tile.wrong-reveal{color:var(--red);}
+.wof-tile span{display:block;line-height:1;}
+
+/* ── SPINNER ── */
+.wof-spinner-wrap{position:relative;width:220px;height:220px;flex-shrink:0;}
+.wof-spinner-canvas{width:220px;height:220px;border-radius:50%;
+  box-shadow:0 0 30px rgba(255,110,180,.3),0 0 60px rgba(88,166,255,.15);}
+.wof-spinner-needle{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+  border-top:24px solid #fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));}
+.wof-spin-btn{padding:10px 28px;border:2px solid #ffd700;border-radius:30px;
+  background:linear-gradient(135deg,rgba(80,60,0,.9),rgba(40,20,0,.9));
+  color:#ffd700;font-family:var(--mono);font-size:.75rem;font-weight:700;
+  cursor:pointer;transition:all .2s;letter-spacing:.05em;}
+.wof-spin-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(120,90,0,.9),rgba(80,50,0,.9));}
+.wof-spin-btn:disabled{opacity:.35;cursor:not-allowed;}
+.wof-spin-result{font-family:var(--mono);font-size:.72rem;color:var(--gold);
+  text-align:center;min-height:20px;}
+
+/* Spin area layout */
+.wof-spin-area{display:flex;flex-direction:column;align-items:center;gap:10px;}
+
+/* Spin zone label overlay */
+.wof-zone-label{font-family:var(--mono);font-size:.68rem;font-weight:700;
+  padding:4px 14px;border-radius:20px;border:1px solid var(--gold);
+  background:rgba(40,30,0,.8);color:var(--gold);text-align:center;}
+
+/* ── LETTER KEYBOARD ── */
+.wof-keyboard{display:flex;flex-direction:column;gap:5px;max-width:480px;width:100%;}
+.wof-key-row{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;}
+.wof-key{width:36px;height:38px;border:1.5px solid rgba(255,255,255,.15);border-radius:7px;
+  background:rgba(20,20,40,.8);color:var(--text);font-family:var(--mono);font-size:.78rem;
+  font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.wof-key:hover:not(:disabled):not(.used){border-color:var(--gold);color:var(--gold);background:rgba(40,30,0,.8);}
+.wof-key.used-correct{background:rgba(0,80,20,.6);border-color:var(--green);color:var(--green);cursor:default;}
+.wof-key.used-wrong{background:rgba(60,0,0,.4);border-color:rgba(239,68,68,.3);color:rgba(239,68,68,.4);cursor:default;}
+.wof-key:disabled{cursor:not-allowed;opacity:.4;}
+.wof-key.locked-spin{opacity:.35;cursor:not-allowed;} /* waiting for spin */
+
+/* ── HANGMAN SVG ── */
+.wof-hangman-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.wof-hangman-svg{width:160px;height:200px;}
+.wof-wrong-count{font-family:var(--mono);font-size:.65rem;color:var(--red);letter-spacing:.08em;}
+
+/* Wrong letters display */
+.wof-wrong-letters{font-family:var(--mono);font-size:.75rem;color:var(--red);
+  letter-spacing:.12em;min-height:20px;text-align:center;}
+
+/* Status message */
+.wof-status{font-family:var(--mono);font-size:.82rem;text-align:center;
+  padding:8px 18px;border-radius:8px;min-height:36px;max-width:500px;width:100%;}
+.wof-status.win{color:#4ade80;background:rgba(0,60,20,.5);border:1px solid rgba(34,197,94,.3);}
+.wof-status.lose{color:#f87171;background:rgba(60,0,0,.5);border:1px solid rgba(239,68,68,.3);}
+.wof-status.info{color:var(--gold);background:rgba(40,30,0,.4);border:1px solid rgba(245,200,66,.2);}
+
+/* New word button */
+.wof-new-btn{padding:10px 26px;border:1.5px solid rgba(255,255,255,.2);border-radius:24px;
+  background:transparent;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s;}
+.wof-new-btn:hover{border-color:var(--text);color:var(--text);}
+
+/* Difficulty selector for hangman */
+.wof-diff-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;}
+.wof-diff-label{font-family:var(--mono);font-size:.6rem;color:var(--muted);}
+
+/* ── VISUAL LAB ── */
+.vlab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;max-width:1000px;margin:0 auto;}
+.vlab-tile{background:var(--surf);border:1px solid var(--border2);border-radius:14px;
+  padding:20px 16px 16px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden;}
+.vlab-tile:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.vlab-tile-icon{font-size:2.2rem;margin-bottom:8px;}
+.vlab-tile-name{font-family:var(--disp);font-size:1.15rem;letter-spacing:.04em;margin-bottom:4px;}
+.vlab-tile-desc{font-size:.68rem;color:var(--muted);line-height:1.5;}
+.vlab-tile-tag{position:absolute;top:8px;right:8px;font-size:.52rem;font-family:var(--mono);
+  padding:2px 6px;border-radius:6px;background:rgba(6,182,212,.12);color:var(--cyan);border:1px solid rgba(6,182,212,.3);}
+.vlab-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;
+  background:var(--surf);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;
+  max-width:700px;width:100%;}
+.vlab-ctrl-lbl{font-size:.62rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:.08em;margin-right:4px;}
+.vlab-canvas-wrap{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;
+  padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:700px;width:100%;}
+.vlab-caption{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:center;min-height:16px;}
+.vlab-btn{padding:8px 18px;border-radius:8px;font-family:var(--sans);font-weight:700;font-size:.78rem;
+  cursor:pointer;transition:all .15s;border:1px solid;}
+.vlab-btn-pri{background:var(--blue);border-color:var(--blue);color:#fff;}
+.vlab-btn-pri:hover{background:#2a70e8;}
+.vlab-btn-sec{background:transparent;border-color:var(--border2);color:var(--muted);}
+.vlab-btn-sec:hover{border-color:var(--text);color:var(--text);}
+.vlab-slider{-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;
+  background:var(--border2);outline:none;width:120px;cursor:pointer;}
+.vlab-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--blue);cursor:pointer;}
+.vlab-select{background:var(--surf2);border:1px solid var(--border2);color:var(--text);
+  border-radius:6px;padding:5px 8px;font-size:.76rem;outline:none;cursor:pointer;}
+
+@media(max-width:600px){
+  .vlab-tile{padding:14px 10px 12px;}
+}
+
+@media(max-width:600px){
+  .wof-tile{width:30px;height:38px;font-size:1rem;}
+  .wof-key{width:32px;height:34px;font-size:.7rem;}
+  .wof-spinner-wrap,.wof-spinner-canvas{width:180px;height:180px;}
+}
+/* ── NEW STIMULUS ELEMENTS ── */
+.modal-context{background:var(--surf2);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;
+  padding:9px 13px;margin-bottom:11px;font-size:.82rem;line-height:1.7;color:var(--text);}
+.modal-reaction{background:rgba(61,139,255,.06);border:1px solid rgba(61,139,255,.25);
+  border-radius:8px;padding:9px 14px;margin-bottom:11px;font-family:var(--mono);
+  font-size:.88rem;color:#a5b4fc;text-align:center;letter-spacing:.03em;}
+.modal-datatable{margin-bottom:12px;overflow-x:auto;}
+.modal-datatable table{width:100%;border-collapse:collapse;font-size:.78rem;}
+.modal-datatable th{background:var(--surf2);border:1px solid var(--border2);
+  padding:6px 10px;font-family:var(--mono);font-size:.65rem;color:var(--cyan);
+  text-align:center;letter-spacing:.06em;text-transform:uppercase;}
+.modal-datatable td{border:1px solid var(--border);padding:6px 10px;text-align:center;
+  font-family:var(--mono);color:var(--text);}
+.modal-datatable tr:nth-child(even) td{background:var(--surf2);}
+.modal-image{margin-bottom:12px;text-align:center;}
+.modal-image img{max-width:100%;border-radius:8px;border:1px solid var(--border2);}
+.qa-toggle{padding:4px 10px;border-radius:5px;font-size:.65rem;font-weight:700;
+  cursor:pointer;border:1px solid;transition:all .15s;white-space:nowrap;}
+.qa-toggle.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:var(--green);}
+.qa-toggle.off{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#f87171;}
+.q-card.qdisabled{opacity:.5;}
+.vocab-card{background:var(--surf);border:1px solid var(--border);border-radius:9px;
+  padding:9px 13px;display:flex;gap:10px;align-items:center;transition:border-color .15s;}
+.vocab-card:hover{border-color:var(--border2);}
+.vocab-card.vdisabled{opacity:.45;}
+.vocab-word{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--text);
+  min-width:120px;flex-shrink:0;}
+.vocab-def{font-size:.76rem;color:var(--muted);flex:1;line-height:1.4;}
+.vocab-meta{font-family:var(--mono);font-size:.58rem;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+
+/* ── STUDY PLANNER ── */
+#planner-screen{flex-direction:column;align-items:center;}
+.planner-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.planner-tab{padding:10px 18px;border:none;background:transparent;color:var(--muted);
+  font-family:var(--mono);font-size:.68rem;font-weight:600;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.planner-tab:hover{color:var(--text);}
+.planner-tab.active{color:#818cf8;border-bottom-color:#818cf8;}
+.planner-game-card{background:var(--surf);border:1.5px solid var(--border2);border-radius:14px;
+  padding:18px 16px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;
+  align-items:center;gap:8px;text-align:center;min-width:140px;}
+.planner-game-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.planner-game-card.active{border-color:#818cf8;background:rgba(129,140,248,.08);}
+.planner-game-icon{font-size:2rem;}
+.planner-game-name{font-family:var(--disp);font-size:1rem;letter-spacing:.04em;}
+.grade-ring{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--grade-color,#818cf8) var(--grade-pct,0%), var(--surf2) 0);
+  box-shadow:0 0 0 8px var(--surf2);position:relative;}
+.grade-ring-inner{position:absolute;inset:12px;border-radius:50%;background:var(--surf);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.grade-letter{font-family:var(--disp);font-size:2rem;letter-spacing:.04em;}
+.grade-pct{font-family:var(--mono);font-size:.62rem;color:var(--muted);}
+.achievement-badge{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:10px;border:1px solid var(--border2);background:var(--surf);}
+.achievement-badge.earned{border-color:var(--gold);background:rgba(245,200,66,.06);}
+.achievement-badge.locked{opacity:.4;}
+.ach-icon{font-size:1.6rem;flex-shrink:0;}
+.ach-name{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text);}
+.ach-desc{font-size:.65rem;color:var(--muted);margin-top:1px;}
+.ach-date{font-family:var(--mono);font-size:.58rem;color:var(--gold);margin-top:2px;}
+.planner-title{font-family:var(--disp);font-size:1.5rem;letter-spacing:.06em;color:#818cf8;}
+.planner-body{width:100%;max-width:900px;padding:24px 20px;overflow-y:auto;}
+
+/* Chapter/topic selection grid */
+.planner-ch-block{background:var(--surf);border:1px solid var(--border);border-radius:14px;
+  margin-bottom:16px;overflow:hidden;}
+.planner-ch-hdr{display:flex;align-items:center;gap:12px;padding:12px 16px;
+  cursor:pointer;user-select:none;transition:background .15s;}
+.planner-ch-hdr:hover{background:var(--surf2);}
+.planner-ch-expand{font-size:.75rem;color:var(--muted);margin-left:auto;transition:transform .2s;}
+.planner-ch-expand.open{transform:rotate(90deg);}
+.planner-ch-topics{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 14px;}
+.planner-topic-chip{display:flex;align-items:center;gap:7px;padding:7px 10px 7px 12px;
+  border-radius:24px;border:1.5px solid var(--border2);background:var(--bg);
+  font-size:.75rem;color:var(--muted);transition:border-color .15s;}
+.planner-topic-chip:hover{border-color:var(--border2);}
+.planner-topic-chip .chip-icon{font-size:1rem;}
+.planner-topic-chip .chip-count{font-family:var(--mono);font-size:.58rem;opacity:.7;}
+.planner-chip-check{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;
+  display:flex;align-items:center;justify-content:center;font-size:.55rem;flex-shrink:0;}
+.planner-topic-chip.selected .planner-chip-check{background:#818cf8;border-color:#818cf8;color:#fff;}
+
+/* Q and V full cards */
+.planner-topic-card{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:12px;border:2px solid;cursor:pointer;transition:all .18s;user-select:none;
+  min-width:140px;}
+.ptc-icon{font-size:1.8rem;line-height:1;flex-shrink:0;}
+.ptc-body{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.ptc-name{font-size:.82rem;font-weight:600;color:var(--text);line-height:1.3;}
+.ptc-count{font-family:var(--mono);font-size:.6rem;opacity:.7;margin-top:1px;}
+.ptc-grade{font-family:var(--mono);font-size:.55rem;margin-top:1px;}
+
+.planner-q-card{border-color:rgba(61,139,255,.3);background:rgba(61,139,255,.04);color:var(--blue);}
+.planner-q-card:hover{border-color:rgba(61,139,255,.7);background:rgba(61,139,255,.1);}
+.planner-q-card.q-active{border-color:var(--blue);background:rgba(61,139,255,.18);box-shadow:0 0 0 1px rgba(61,139,255,.3);}
+.planner-q-card.q-active .ptc-name{color:#93c5fd;}
+
+.planner-v-card{border-color:rgba(6,182,212,.3);background:rgba(6,182,212,.04);color:var(--cyan);}
+.planner-v-card:hover{border-color:rgba(6,182,212,.7);background:rgba(6,182,212,.1);}
+.planner-v-card.v-active{border-color:var(--cyan);background:rgba(6,182,212,.18);box-shadow:0 0 0 1px rgba(6,182,212,.3);}
+.planner-v-card.v-active .ptc-name{color:#67e8f9;}
+
+/* Q and V toggle buttons inside chapter header */
+.chip-q-btn{font-family:var(--mono);font-size:.58rem;font-weight:700;padding:3px 8px;
+  border-radius:10px;border:1.5px solid rgba(61,139,255,.35);background:rgba(61,139,255,.06);
+  color:var(--blue);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.chip-q-btn:hover{background:rgba(61,139,255,.15);border-color:var(--blue);}
+.chip-q-btn.q-active{background:rgba(61,139,255,.2);border-color:var(--blue);color:#93c5fd;}
+.chip-v-btn{font-family:var(--mono);font-size:.58rem;font-weight:700;padding:3px 8px;
+  border-radius:10px;border:1.5px solid rgba(6,182,212,.35);background:rgba(6,182,212,.06);
+  color:var(--cyan);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.chip-v-btn:hover{background:rgba(6,182,212,.15);border-color:var(--cyan);}
+.chip-v-btn.v-active{background:rgba(6,182,212,.2);border-color:var(--cyan);color:#67e8f9;}
+
+/* Progress dashboard on hub */
+#study-plan-widget{width:100%;max-width:860px;margin-top:4px;}
+.spw-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.spw-title{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.spw-edit{font-family:var(--mono);font-size:.6rem;padding:3px 10px;border-radius:6px;
+  border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;margin-left:auto;}
+.spw-edit:hover{border-color:#818cf8;color:#818cf8;}
+.spw-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.spw-chip{font-family:var(--mono);font-size:.62rem;padding:4px 10px;border-radius:12px;
+  border:1px solid rgba(129,140,248,.3);background:rgba(129,140,248,.08);color:#a5b4fc;}
+.spw-stats-row{display:flex;gap:10px;flex-wrap:wrap;}
+.spw-stat-card{flex:1;min-width:120px;background:var(--surf);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;}
+.spw-stat-val{font-family:var(--disp);font-size:1.6rem;color:var(--text);letter-spacing:.04em;}
+.spw-stat-val.good{color:var(--green);}
+.spw-stat-val.warn{color:var(--gold);}
+.spw-stat-val.bad{color:var(--red);}
+.spw-stat-lbl{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+.spw-miss-list{background:var(--surf);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;margin-top:8px;max-height:160px;overflow-y:auto;}
+.spw-miss-hdr{font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;}
+.spw-miss-item{display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid var(--border);font-size:.75rem;}
+.spw-miss-item:last-child{border-bottom:none;}
+.spw-miss-q{flex:1;color:var(--text);line-height:1.4;}
+.spw-miss-meta{font-family:var(--mono);font-size:.58rem;color:var(--muted);white-space:nowrap;}
+.spw-miss-badge{font-family:var(--mono);font-size:.55rem;padding:1px 6px;border-radius:5px;
+  background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2);white-space:nowrap;}
+.spw-empty{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-align:center;padding:12px;opacity:.6;}
+
+/* Universal game launcher */
+#launcher-screen{flex-direction:column;align-items:center;}
+.launcher-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.launcher-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.06em;color:#818cf8;}
+.launcher-body{width:100%;max-width:820px;padding:20px 20px 60px;overflow-y:auto;}
+.launcher-section{margin-bottom:20px;}
+.launcher-section-lbl{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
+.launcher-game-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.launcher-game-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border2);
+  background:var(--surf);color:var(--muted);font-size:.75rem;font-family:var(--mono);
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.launcher-game-btn:hover{border-color:var(--text);color:var(--text);}
+.launcher-game-btn.active{color:#818cf8;border-color:#818cf8;background:rgba(129,140,248,.1);}
+.launcher-sel-summary{font-family:var(--mono);font-size:.68rem;color:var(--cyan);
+  padding:8px 12px;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);
+  border-radius:8px;margin-bottom:14px;min-height:32px;}
+.launcher-go-btn{padding:12px 32px;border-radius:10px;background:#818cf8;border:none;
+  color:#fff;font-family:var(--sans);font-weight:700;font-size:.9rem;cursor:pointer;
+  transition:all .15s;margin-top:8px;}
+.launcher-go-btn:hover{background:#6366f1;}
+.launcher-go-btn:disabled{opacity:.35;cursor:not-allowed;}
+#ws-screen{flex-direction:column;}
+.ws-toggle-group{display:flex;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;padding:2px;gap:0;}
+.ws-tog{padding:4px 12px;border-radius:16px;font-family:var(--mono);font-size:.58rem;
+  cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;white-space:nowrap;}
+.ws-tog.active{background:rgba(244,114,182,.2);color:#f472b6;font-weight:700;}
+
+/* Grid cells */
+.ws-cell{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.88rem;font-weight:700;color:rgba(220,230,255,.75);
+  border-radius:5px;cursor:default;user-select:none;transition:background .1s,color .1s;
+  position:relative;}
+.ws-cell.selecting{background:rgba(244,114,182,.25);color:#f9a8d4;}
+.ws-cell.found{background:rgba(52,211,153,.18);color:#6ee7b7;cursor:default;}
+.ws-cell.found.multi{background:rgba(99,179,237,.18);color:#90cdf4;}  /* overlapping word */
+.ws-cell.reveal{background:rgba(245,200,66,.12);color:#f5c842;}
+
+/* Word list sidebar */
+.ws-word-item{display:flex;align-items:flex-start;gap:8px;padding:5px 4px;
+  border-radius:6px;cursor:pointer;transition:background .12s;margin-bottom:2px;}
+.ws-word-item:hover{background:var(--surf2);}
+.ws-word-item.found{opacity:.55;}
+.ws-word-item .ws-word-text{font-family:var(--mono);font-size:.72rem;font-weight:700;
+  color:var(--text);line-height:1.3;letter-spacing:.04em;}
+.ws-word-item.found .ws-word-text{text-decoration:line-through;color:var(--muted);}
+.ws-word-item .ws-word-def{font-size:.63rem;color:var(--muted);line-height:1.4;margin-top:1px;}
+.ws-check{font-size:.75rem;color:#34d399;flex-shrink:0;margin-top:1px;width:14px;}
+
+/* Timer & complete banner */
+.ws-complete{text-align:center;padding:20px;animation:fIn .3s ease;}
+.ws-complete-title{font-family:var(--disp);font-size:2.2rem;letter-spacing:.06em;color:#f472b6;margin-bottom:4px;}
+.ws-complete-sub{font-size:.85rem;color:var(--muted);}
+
+@media(max-width:680px){
+  #ws-body{flex-direction:column;}
+  #ws-words-panel{width:100%;min-width:0;border-left:none;border-top:1px solid var(--border);
+    max-height:160px;padding:10px 12px;}
+  #ws-words-panel > div:first-child{display:none;}
+  #ws-word-list{display:flex;flex-wrap:wrap;gap:6px;}
+  .ws-word-item{padding:3px 7px;background:var(--surf);border:1px solid var(--border);border-radius:8px;margin:0;}
+  .ws-word-item .ws-word-def{display:none;}
+  .ws-cell{width:28px;height:28px;font-size:.75rem;}
+}
+#prac-screen{flex-direction:column;}
+.prac-card{width:100%;max-width:680px;background:var(--surf);border:2px solid var(--border2);
+  border-radius:18px;padding:24px 26px;position:relative;animation:mIn .2s ease;}
+.prac-card.answered-ok{border-color:var(--green);}
+.prac-card.answered-no{border-color:var(--red);}
+.prac-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.prac-cat-badge{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);
+  padding:3px 8px;border-radius:6px;}
+.prac-pts-badge{font-family:var(--mono);font-size:.6rem;color:var(--gold);
+  background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);padding:3px 8px;border-radius:6px;}
+.prac-rng-badge{font-family:var(--mono);font-size:.55rem;color:#34d399;
+  background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);padding:2px 7px;border-radius:6px;}
+.prac-q{font-size:.98rem;line-height:1.65;color:var(--text);margin-bottom:16px;}
+.prac-given{background:var(--surf2);border:1px solid var(--border2);border-radius:var(--r);
+  padding:9px 13px;margin-bottom:12px;font-family:var(--mono);font-size:.78rem;line-height:1.9;}
+.prac-given-lbl{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.prac-mc{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.prac-opt{background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;
+  padding:9px 13px;cursor:pointer;font-size:.86rem;text-align:left;color:var(--text);
+  font-family:var(--sans);transition:all .15s;display:flex;align-items:center;gap:10px;}
+.prac-opt:hover:not(:disabled):not(.sel){border-color:var(--blue);background:rgba(61,139,255,.07);}
+.prac-opt.sel{border-color:var(--gold);background:rgba(245,200,66,.1);color:var(--gold);}
+.prac-opt.ok{border-color:var(--green)!important;background:rgba(34,197,94,.1)!important;color:#4ade80!important;}
+.prac-opt.no{border-color:var(--red)!important;background:rgba(239,68,68,.1)!important;color:#f87171!important;}
+.prac-opt:disabled{cursor:default;}
+.prac-opt-letter{font-family:var(--mono);font-size:.55rem;border:1px solid currentColor;
+  border-radius:3px;padding:2px 4px;opacity:.6;flex-shrink:0;}
+.prac-num{margin-bottom:14px;}
+.prac-num-lbl{font-size:.68rem;color:var(--muted);margin-bottom:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+.prac-num-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);color:var(--text);
+  padding:9px 12px;border-radius:7px;font-family:var(--mono);font-size:.92rem;outline:none;transition:border-color .15s;}
+.prac-num-input:focus{border-color:var(--blue);}
+.prac-num-input.ok{border-color:var(--green);}
+.prac-num-input.no{border-color:var(--red);}
+.prac-feedback{padding:9px 14px;border-radius:7px;font-weight:600;font-size:.86rem;margin-bottom:12px;text-align:center;display:none;}
+.prac-feedback.ok{display:block;background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+.prac-feedback.no{display:block;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+.prac-sol{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:12px;font-size:.8rem;line-height:1.8;display:none;}
+.prac-sol.show{display:block;animation:fIn .2s ease;}
+.prac-sol-hdr{font-family:var(--mono);font-size:.6rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.prac-actions{display:flex;gap:8px;flex-wrap:wrap;width:100%;max-width:680px;}
+.prac-btn{padding:10px 20px;border-radius:9px;font-family:var(--sans);font-weight:700;font-size:.8rem;
+  cursor:pointer;transition:all .15s;border:1px solid;}
+.prac-btn-submit{background:var(--blue);border-color:var(--blue);color:#fff;}
+.prac-btn-submit:hover{background:#2a70e8;}
+.prac-btn-submit:disabled{opacity:.35;cursor:not-allowed;}
+.prac-btn-next{background:rgba(34,197,94,.1);border-color:var(--green);color:#4ade80;}
+.prac-btn-next:hover{background:rgba(34,197,94,.22);}
+.prac-btn-regen{background:rgba(52,211,153,.08);border-color:#34d399;color:#34d399;}
+.prac-btn-regen:hover{background:rgba(52,211,153,.18);}
+.prac-btn-sol{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);}
+.prac-btn-sol:hover{background:rgba(6,182,212,.18);}
+.prac-btn-hint{background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.3);color:var(--gold);}
+.prac-btn-hint:hover{background:rgba(245,200,66,.18);}
+.prac-hint-box{background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.25);
+  border-radius:var(--r);padding:9px 13px;margin-bottom:10px;font-size:.8rem;color:#fbbf24;
+  line-height:1.6;display:none;width:100%;max-width:680px;}
+.prac-hint-box.show{display:block;}
+.prac-regen-info{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:center;
+  padding:6px 12px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.12);
+  border-radius:8px;width:100%;max-width:680px;}
+/* Topic pill selector within practice */
+.prac-topic-select{display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 8px;}
+.prac-topic-pill{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);
+  background:var(--surf);color:var(--muted);font-size:.72rem;font-family:var(--mono);
+  cursor:pointer;transition:all .15s;}
+.prac-topic-pill.active{border-color:#34d399;color:#34d399;background:rgba(52,211,153,.08);}
+.prac-topic-pill:hover{border-color:var(--text);color:var(--text);}
+.rng-tag{display:inline-block;font-family:var(--mono);font-size:.52rem;color:#34d399;
+  background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);padding:1px 5px;
+  border-radius:4px;margin-left:5px;vertical-align:middle;}
+
+/* ── SESSION BAR ── */
+#session-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:80;
+  background:rgba(10,12,20,.92);border-top:1px solid rgba(129,140,248,.25);
+  backdrop-filter:blur(8px);padding:6px 16px;
+  flex-wrap:wrap;align-items:center;gap:8px;}
+#session-bar.visible{display:flex;}
+.sbar-label{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;}
+.sbar-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;min-width:0;}
+.sbar-chip{font-family:var(--mono);font-size:.6rem;padding:3px 8px;border-radius:10px;
+  background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.25);color:#a5b4fc;white-space:nowrap;}
+.sbar-stats{font-family:var(--mono);font-size:.6rem;color:var(--muted);flex-shrink:0;}
+.sbar-stats b{color:var(--text);}
+.sbar-btns{display:flex;gap:6px;flex-shrink:0;}
+.sbar-btn{padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:.6rem;
+  font-weight:700;cursor:pointer;border:1px solid;transition:all .15s;white-space:nowrap;}
+.sbar-btn-switch{background:rgba(129,140,248,.1);border-color:rgba(129,140,248,.4);color:#818cf8;}
+.sbar-btn-switch:hover{background:rgba(129,140,248,.22);}
+.sbar-btn-report{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);}
+.sbar-btn-report:hover{background:rgba(6,182,212,.18);}
+
+/* ── SESSION REPORT MODAL ── */
+#session-report-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);
+  z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+#session-report-overlay.open{display:flex;}
+.srep-modal{background:var(--surf);border:1px solid var(--border2);border-radius:18px;
+  width:100%;max-width:680px;max-height:88vh;overflow-y:auto;
+  animation:mIn .22s ease;box-shadow:0 24px 80px rgba(0,0,0,.7);}
+.srep-hdr{padding:18px 22px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.srep-title{font-family:var(--disp);font-size:1.6rem;letter-spacing:.05em;color:#818cf8;flex:1;}
+.srep-x{background:transparent;border:1px solid var(--border2);color:var(--muted);
+  width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.srep-x:hover{color:var(--text);border-color:var(--text);}
+.srep-body{padding:16px 22px;}
+.srep-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.srep-stat{flex:1;min-width:100px;background:var(--surf2);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;text-align:center;}
+.srep-stat-val{font-family:var(--disp);font-size:1.8rem;letter-spacing:.04em;}
+.srep-stat-lbl{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.srep-section{margin-bottom:16px;}
+.srep-section-hdr{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);margin-bottom:8px;padding-bottom:5px;
+  border-bottom:1px solid var(--border);}
+.srep-q-row{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border-radius:7px;
+  margin-bottom:3px;font-size:.78rem;line-height:1.45;}
+.srep-q-row.ok{background:rgba(34,197,94,.06);}
+.srep-q-row.no{background:rgba(239,68,68,.06);}
+.srep-q-icon{font-size:.85rem;flex-shrink:0;margin-top:1px;}
+.srep-q-text{flex:1;color:var(--text);}
+.srep-q-meta{font-family:var(--mono);font-size:.58rem;color:var(--muted);white-space:nowrap;}
+.srep-weight-bar{display:flex;gap:2px;height:6px;border-radius:3px;overflow:hidden;
+  margin-top:3px;max-width:80px;}
+.srep-weight-seg{flex:1;border-radius:1px;}
+/* add bottom padding so session bar doesn't clip content — only on screens
+   that render content directly at the screen level (not inside scroll containers) */
+#jeopardy-screen.active,#wordle-screen.active,#mil-screen.active{padding-bottom:46px;}
+#hub-screen.active,#admin-screen.active,#planner-screen.active,
+#vlab-screen.active,#vlab-detail-screen.active,
+#cw-screen.active,#cw-sel-screen.active,#fc-screen.active,#fc-sel-screen.active,
+#selector-screen.active,#mil-sel-screen.active,#prac-screen.active,#prac-sel-screen.active,
+#wof-screen.active,#wof-sel-screen.active,#ws-screen.active,#ws-sel-screen.active{padding-bottom:0;}
+
+/* ── WORDLE ── */
+#wordle-screen{flex-direction:column;align-items:center;}
+.wdl-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);
+  padding:11px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.wdl-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.08em;
+  background:linear-gradient(135deg,#4ade80,#06b6d4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.wdl-mode-group{display:flex;background:var(--bg);border:1px solid var(--border2);
+  border-radius:8px;padding:2px;gap:0;margin-left:auto;}
+.wdl-mode-btn{padding:5px 13px;border-radius:6px;font-family:var(--mono);font-size:.6rem;
+  cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;}
+.wdl-mode-btn.active{background:var(--surf2);color:var(--text);font-weight:700;}
+
+.wdl-body{flex:1;width:100%;max-width:520px;display:flex;flex-direction:column;
+  align-items:center;padding:16px 12px 20px;gap:12px;overflow-y:auto;}
+
+/* Clue card */
+.wdl-clue-card{width:100%;background:var(--surf2);border:1px solid var(--border2);
+  border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:6px;}
+.wdl-clue-label{font-family:var(--mono);font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.12em;color:var(--muted);}
+.wdl-clue-text{font-size:.9rem;line-height:1.55;color:var(--text);}
+.wdl-clue-props{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+.wdl-prop{font-family:var(--mono);font-size:.62rem;padding:3px 8px;border-radius:8px;}
+.wdl-prop-ion{background:rgba(6,182,212,.1);color:var(--cyan);border:1px solid rgba(6,182,212,.25);}
+.wdl-prop-charge{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.25);}
+.wdl-prop-cat{background:rgba(168,85,247,.1);color:#c084fc;border:1px solid rgba(168,85,247,.25);}
+.wdl-hint-unlock{font-family:var(--mono);font-size:.6rem;color:var(--muted);
+  cursor:pointer;text-decoration:underline;text-underline-offset:2px;align-self:flex-start;}
+.wdl-hint-unlock:hover{color:var(--gold);}
+
+/* Guess grid */
+.wdl-grid{display:flex;flex-direction:column;gap:5px;}
+.wdl-row{display:flex;gap:5px;}
+.wdl-tile{width:52px;height:52px;border:2px solid var(--border2);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--text);
+  text-transform:uppercase;transition:border-color .1s,background .3s,transform .1s;
+  position:relative;user-select:none;}
+.wdl-tile.filled{border-color:var(--border2);}
+.wdl-tile.active-row{border-color:rgba(255,255,255,.35);}
+.wdl-tile.pop{animation:wdlPop .1s ease;}
+.wdl-tile.flip{animation:wdlFlip .5s ease forwards;}
+.wdl-tile.shake{animation:wdlShake .4s ease;}
+.wdl-tile.bounce{animation:wdlBounce .5s ease;}
+.wdl-tile[data-state="correct"]{background:#166534;border-color:#166534;color:#fff;}
+.wdl-tile[data-state="present"]{background:#854d0e;border-color:#854d0e;color:#fff;}
+.wdl-tile[data-state="absent"]{background:#374151;border-color:#374151;color:#aaa;}
+@keyframes wdlPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes wdlFlip{
+  0%{transform:rotateX(0)}
+  50%{transform:rotateX(-90deg)}
+  100%{transform:rotateX(0)}
+}
+@keyframes wdlShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+@keyframes wdlBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+/* Word length indicator */
+.wdl-length-hint{font-family:var(--mono);font-size:.62rem;color:var(--muted);
+  text-align:center;letter-spacing:.08em;}
+
+/* Toast */
+.wdl-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);
+  background:rgba(30,40,60,.95);border:1px solid var(--border2);
+  color:var(--text);font-family:var(--mono);font-size:.78rem;
+  padding:8px 20px;border-radius:20px;z-index:300;pointer-events:none;
+  opacity:0;transition:opacity .2s;}
+.wdl-toast.show{opacity:1;}
+
+/* Keyboard */
+.wdl-keyboard{display:flex;flex-direction:column;gap:6px;width:100%;max-width:460px;}
+.wdl-key-row{display:flex;gap:5px;justify-content:center;}
+.wdl-key{height:42px;min-width:32px;padding:0 6px;border-radius:6px;
+  background:var(--surf2);border:1px solid var(--border2);color:var(--text);
+  font-family:var(--mono);font-size:.75rem;font-weight:700;cursor:pointer;
+  transition:background .2s,color .2s;display:flex;align-items:center;
+  justify-content:center;flex:1;max-width:42px;user-select:none;}
+.wdl-key.wide{max-width:64px;font-size:.6rem;}
+.wdl-key:hover{background:var(--surf3);}
+.wdl-key[data-state="correct"]{background:#166534;border-color:#166534;color:#fff;}
+.wdl-key[data-state="present"]{background:#854d0e;border-color:#854d0e;color:#fff;}
+.wdl-key[data-state="absent"]{background:#1f2937;border-color:#1f2937;color:#6b7280;}
+
+/* Result reveal */
+.wdl-result{width:100%;background:var(--surf);border:1px solid var(--border2);
+  border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;
+  animation:mIn .25s ease;}
+.wdl-result-verdict{font-family:var(--disp);font-size:1.8rem;letter-spacing:.05em;}
+.wdl-result-word{font-family:var(--mono);font-size:1.1rem;color:var(--cyan);letter-spacing:.1em;}
+.wdl-result-props{display:flex;flex-direction:column;gap:4px;}
+.wdl-result-prop-row{display:flex;gap:8px;align-items:center;font-size:.78rem;}
+.wdl-result-prop-lbl{font-family:var(--mono);font-size:.6rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;min-width:80px;}
+.wdl-result-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.wdl-r-btn{padding:9px 20px;border-radius:8px;font-family:var(--sans);font-weight:700;
+  font-size:.8rem;cursor:pointer;transition:all .15s;border:1px solid;}
+.wdl-r-next{background:var(--green);border-color:var(--green);color:#000;}
+.wdl-r-next:hover{background:#16a34a;}
+.wdl-r-hub{background:transparent;border-color:var(--border2);color:var(--muted);}
+.wdl-r-hub:hover{border-color:var(--text);color:var(--text);}
+
+/* Streak display */
+.wdl-streak{font-family:var(--mono);font-size:.65rem;color:var(--muted);
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.wdl-streak b{color:var(--text);}
+
+/* ── CONNECTIONS ── */
+#conn-screen{flex-direction:column;align-items:center;}
+.conn-hdr{width:100%;background:var(--surf);border-bottom:1px solid var(--border);
+  padding:11px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.conn-title{font-family:var(--disp);font-size:1.4rem;letter-spacing:.08em;
+  background:linear-gradient(135deg,#f472b6,#818cf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.conn-body{flex:1;width:100%;max-width:680px;display:flex;flex-direction:column;
+  align-items:center;padding:20px 16px;gap:14px;overflow-y:auto;}
+.conn-mistakes{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.conn-dot{width:12px;height:12px;border-radius:50%;background:var(--muted);transition:background .3s;}
+.conn-dot.used{background:var(--red);}
+.conn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;}
+.conn-tile{background:var(--surf2);border:2px solid var(--border2);border-radius:10px;
+  padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;
+  font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text);
+  letter-spacing:.04em;line-height:1.3;min-height:64px;display:flex;
+  align-items:center;justify-content:center;user-select:none;}
+.conn-tile:hover{border-color:var(--text);}
+.conn-tile.selected{border-color:var(--gold);background:rgba(245,200,66,.15);color:var(--gold);}
+.conn-tile.shake{animation:wdlShake .4s ease;}
+.conn-tile.solved{cursor:default;border-color:transparent;}
+.conn-solved-row{width:100%;border-radius:10px;padding:14px 16px;text-align:center;animation:mIn .3s ease;}
+.conn-solved-title{font-family:var(--disp);font-size:1.1rem;letter-spacing:.05em;margin-bottom:3px;}
+.conn-solved-words{font-family:var(--mono);font-size:.7rem;opacity:.85;line-height:1.6;}
+.conn-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.conn-btn{padding:10px 22px;border-radius:9px;font-family:var(--sans);font-weight:700;
+  font-size:.82rem;cursor:pointer;transition:all .15s;border:1px solid;}
+.conn-btn-shuffle{background:var(--surf2);border-color:var(--border2);color:var(--text);}
+.conn-btn-shuffle:hover{border-color:var(--text);}
+.conn-btn-deselect{background:transparent;border-color:var(--border2);color:var(--muted);}
+.conn-btn-deselect:hover{border-color:var(--text);color:var(--text);}
+.conn-btn-submit{background:var(--text);border-color:var(--text);color:var(--bg);}
+.conn-btn-submit:hover{background:var(--gold);border-color:var(--gold);}
+.conn-btn-submit:disabled{opacity:.3;cursor:not-allowed;}
+.conn-result{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
+.conn-result-title{font-family:var(--disp);font-size:2.2rem;letter-spacing:.06em;}
+.conn-result-sub{font-size:.88rem;color:var(--muted);}
+.conn-emoji-grid{display:flex;flex-direction:column;gap:4px;align-items:center;font-size:1.4rem;letter-spacing:2px;}
+.conn-c0{background:linear-gradient(135deg,#854d0e,#713f12);color:#fef9c3;}
+.conn-c1{background:linear-gradient(135deg,#166534,#14532d);color:#dcfce7;}
+.conn-c2{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#dbeafe;}
+.conn-c3{background:linear-gradient(135deg,#6b21a8,#7e22ce);color:#f3e8ff;}
+</style>
+</head>
+<body>
+
+<!-- HUB -->
+<div id="hub-screen" class="screen active">
+  <div class="hub-logo">
+    <h1>ChemReview</h1>
+    <p>Chemistry Study Platform — v1</p>
+    <div class="hub-tag">⚗ Select a game to begin</div>
+  </div>
+  <!-- Featured daily games -->
+  <div style="display:flex;gap:8px;margin-bottom:4px;align-items:center;">
+    <span style="font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);">Daily Games</span>
+    <div style="flex:1;height:1px;background:var(--border);"></div>
+  </div>
+  <div style="display:flex;gap:16px;justify-content:center;margin-bottom:16px;">
+    <div class="game-card available" onclick="launchGame('wordle')" style="width:220px;">
+      <span class="card-badge badge-ready">Daily</span>
+      <div class="card-icon">🟩</div><div class="card-name">Chem Wordle</div>
+      <div class="card-desc">6 guesses to name the ion or element. New word every game.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('connections')" style="width:220px;">
+      <span class="card-badge badge-ready">Daily</span>
+      <div class="card-icon">🔗</div><div class="card-name">Connections</div>
+      <div class="card-desc">Group 16 chemistry terms into 4 hidden categories.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('truefalse')" style="width:220px;">
+      <span class="card-badge badge-ready" style="background:rgba(250,204,21,.15);color:#fde047;border-color:rgba(250,204,21,.3);">Blitz</span>
+      <div class="card-icon">⚡</div><div class="card-name">True / False</div>
+      <div class="card-desc">10-second quickfire — 100 facts, beat the clock!</div>
+    </div>
+  </div>
+  <!-- All games -->
+  <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+    <span style="font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);">All Games</span>
+    <div style="flex:1;height:1px;background:var(--border);"></div>
+  </div>
+  <div class="game-cards">
+    <div class="game-card available" onclick="launchGame('jeopardy')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">🎯</div><div class="card-name">Jeopardy</div>
+      <div class="card-desc">Answer for points across categories.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('millionaire')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">💎</div><div class="card-name">Millionaire</div>
+      <div class="card-desc">15 questions, 3 lifelines. Climb to $1,000,000!</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('practice')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">🔁</div><div class="card-name">Practice</div>
+      <div class="card-desc">Drill one topic with fresh variants until you've got it.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('flashcards')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">📇</div><div class="card-name">Flashcards</div>
+      <div class="card-desc">Study key terms with flip cards. Tracks your progress.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('crossword')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">✏️</div><div class="card-name">Crossword</div>
+      <div class="card-desc">Fill in chemistry vocabulary from clue definitions.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('wordsearch')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">🔍</div><div class="card-name">Word Search</div>
+      <div class="card-desc">Find chemistry terms hidden in the grid.</div>
+    </div>
+    <div class="game-card available" onclick="launchGame('wof')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">🎡</div><div class="card-name">Wheel / Hangman</div>
+      <div class="card-desc">Spin &amp; guess letters, or switch to Hangman mode.</div>
+    </div>
+    <div class="game-card available" onclick="startChemFormula('naming')">
+      <span class="card-badge badge-ready">Ready</span>
+      <div class="card-icon">⚗️</div><div class="card-name">Formula Lab</div>
+      <div class="card-desc">Name compounds, write formulas, and identify ion charges.</div>
+    </div>
+  </div>
+  <div class="hub-btns">
+    <button class="ctrl-btn" onclick="showPlanner('topics')" style="background:rgba(129,140,248,.08);border-color:rgba(129,140,248,.3);color:#818cf8;">📋 Study Planner</button>
+    <button class="ctrl-btn" onclick="showPlanner('games')" style="background:rgba(61,139,255,.08);border-color:rgba(61,139,255,.3);color:var(--blue);">🎮 Play</button>
+    <button class="ctrl-btn" onclick="showAdmin()" style="background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.25);color:var(--gold);">✎ Manage Questions</button>
+    <button class="ctrl-btn" onclick="showVisualLab()" style="background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);">🎨 Visual Lab</button>
+  </div>
+  <div id="hub-notice" style="font-family:var(--mono);font-size:.68rem;color:var(--muted);text-align:center;max-width:500px;line-height:1.8;background:var(--surf);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;"></div>
+  <div id="study-plan-widget"></div>
+</div>
+
+<!-- STUDY PLANNER -->
+<div id="planner-screen" class="screen">
+  <div class="planner-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="planner-title">📋 Study Planner</div>
+    <div style="flex:1"></div>
+    <!-- Stats strip shown in header when topics are selected -->
+    <div id="planner-hdr-stats" style="display:none;align-items:center;gap:14px;font-family:var(--mono);font-size:.65rem;"></div>
+    <button class="ctrl-btn" id="planner-clear-btn" style="border-color:rgba(239,68,68,.3);color:#f87171;">✕ Clear History</button>
+    <button class="ctrl-btn" id="planner-save-btn" style="background:rgba(129,140,248,.1);border-color:#818cf8;color:#818cf8;">✓ Save &amp; Play</button>
+  </div>
+  <!-- Tab bar -->
+  <div style="display:flex;gap:0;background:var(--surf);border-bottom:1px solid var(--border);padding:0 20px;flex-shrink:0;">
+    <button class="planner-tab active" id="ptab-topics" onclick="plannerTab('topics')">📚 Select Topics</button>
+    <button class="planner-tab" id="ptab-games" onclick="plannerTab('games')">🎮 Play</button>
+    <button class="planner-tab" id="ptab-progress" onclick="plannerTab('progress')">📊 My Progress</button>
+  </div>
+  <div class="planner-body" style="padding:0;overflow-y:auto;">
+    <!-- TOPICS TAB -->
+    <div id="planner-tab-topics" style="padding:20px 24px;">
+      <div id="planner-ch-list"></div>
+    </div>
+    <!-- GAMES TAB -->
+    <div id="planner-tab-games" style="display:none;padding:20px 24px;">
+      <div id="planner-game-panel"></div>
+    </div>
+    <!-- PROGRESS TAB -->
+    <div id="planner-tab-progress" style="display:none;padding:20px 24px;">
+      <div id="planner-progress-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- launcher-screen replaced by planner games tab -->
+<div id="launcher-screen" class="screen" style="display:none!important"></div>
+
+<!-- CROSSWORD SELECTOR -->
+<div id="cw-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">✏️ Crossword — Select Chapter</div>
+  </div>
+  <div class="sel-body"><div id="cw-sel-chapters"></div></div>
+</div>
+
+<!-- CROSSWORD GAME -->
+<div id="cw-screen" class="screen">
+  <div class="cw-hdr">
+    <button class="jeop-back" onclick="showPlanner('games')">← Chapters</button>
+    <div class="cw-title" id="cw-title">Crossword</div>
+    <div style="flex:1"></div>
+    <div class="cw-stat">Found: <span id="cw-found">0</span> / <span id="cw-total">0</span></div>
+    <button class="ctrl-btn" onclick="buildCrossword()">🔀 New Puzzle</button>
+    <button class="ctrl-btn" onclick="revealAll()" style="border-color:rgba(245,200,66,.3);color:var(--gold);">💡 Reveal All</button>
+  </div>
+  <div class="cw-body">
+    <div class="cw-grid-wrap"><div class="cw-grid" id="cw-grid"></div></div>
+    <div class="cw-clues">
+      <div class="cw-clue-section">
+        <div class="cw-clue-head">ACROSS</div>
+        <div id="cw-clues-across"></div>
+      </div>
+      <div class="cw-clue-section">
+        <div class="cw-clue-head">DOWN</div>
+        <div id="cw-clues-down"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARD SELECTOR -->
+<div id="fc-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">📇 Flashcards — Select Chapter</div>
+  </div>
+  <div class="sel-body"><div id="fc-sel-chapters"></div></div>
+</div>
+
+<!-- FLASHCARD GAME -->
+<div id="fc-screen" class="screen">
+  <div class="fc-hdr">
+    <button class="jeop-back" onclick="showPlanner('games')">← Chapters</button>
+    <div class="fc-title" id="fc-title">Flashcards</div>
+    <div style="flex:1"></div>
+    <button class="ctrl-btn" onclick="shuffleFlashcards()">🔀 Shuffle</button>
+  </div>
+  <div class="fc-body" id="fc-body">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- SELECTOR -->
+<div id="selector-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">🎯 Jeopardy — Select Chapter</div>
+  </div>
+  <div class="sel-body">
+    <div id="sel-chapters"></div>
+  </div>
+</div>
+
+<!-- JEOPARDY -->
+<div id="jeopardy-screen" class="screen">
+  <div class="jeop-hdr">
+    <button class="jeop-back" onclick="showPlanner('games')">← Chapters</button>
+    <div>
+      <div class="jeop-title" id="jeop-title">Jeopardy</div>
+      <div class="jeop-sub" id="jeop-sub">Chemistry · Solo Mode</div>
+    </div>
+    <div class="jeop-spacer"></div>
+    <div class="score-wrap">
+      <div class="score-lbl">SCORE&nbsp;</div>
+      <div class="score-val" id="score-val">$0</div>
+    </div>
+    <button class="ctrl-btn" onclick="randomizeBoard()">🔀 New Board</button>
+    <button class="ctrl-btn" onclick="resetBoard()" style="border-color:rgba(239,68,68,.3);color:#f87171;">↺ Reset</button>
+  </div>
+  <div class="prog-bar" id="prog-bar"></div>
+  <div class="board-wrap" id="board-wrap">
+    <div class="jeop-board" id="jeop-board"></div>
+  </div>
+</div>
+
+<!-- QUESTION MODAL -->
+<div class="overlay" id="q-modal">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-cat" id="m-cat"></div>
+        <div class="modal-pts" id="m-pts"></div>
+      </div>
+      <button class="modal-x" id="modal-x-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-context" id="m-context" style="display:none"></div>
+      <div class="modal-reaction" id="m-reaction" style="display:none"></div>
+      <div class="modal-datatable" id="m-datatable" style="display:none"></div>
+      <div class="modal-visual" id="m-visual" style="display:none">
+        <canvas id="m-canvas"></canvas>
+        <div class="visual-caption" id="m-visual-caption"></div>
+      </div>
+      <div class="modal-visual" id="m-visual-2" style="display:none">
+        <canvas id="m-canvas-2"></canvas>
+        <div class="visual-caption" id="m-visual-caption-2"></div>
+      </div>
+      <div class="modal-q" id="m-q"></div>
+      <div class="modal-given" id="m-given"></div>
+      <div class="hint-box" id="hint-box"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="mc-opts" id="mc-opts"></div>
+      <div class="num-area" id="num-area">
+        <div class="num-lbl">Your Answer</div>
+        <input class="num-input" id="num-input" type="text" inputmode="decimal" placeholder="Enter a number…">
+        <div class="num-unit" id="num-unit"></div>
+      </div>
+      <div class="sol-box" id="sol-box"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="m-btn m-hint" id="btn-hint">💡 Hint</button>
+      <button class="m-btn m-submit" id="btn-submit">Submit Answer</button>
+      <button class="m-btn m-sol" id="btn-sol" style="display:none">📖 Solution</button>
+      <button class="m-btn" id="btn-regen" style="display:none;background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:#34d399;">🔁 New Variant</button>
+      <button class="m-btn m-close" id="btn-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MILLIONAIRE SELECTOR -->
+<div id="mil-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">💎 Millionaire — Select Chapter</div>
+  </div>
+  <div class="sel-body"><div id="mil-sel-chapters"></div></div>
+</div>
+
+<!-- MILLIONAIRE GAME -->
+<div id="mil-screen" class="screen">
+  <div class="mil-hdr">
+    <button class="jeop-back" onclick="showPlanner('games')" style="color:var(--muted);">← Chapters</button>
+    <div class="mil-title">WHO WANTS TO BE A MILLIONAIRE</div>
+    <div style="flex:1"></div>
+    <div class="mil-winnings">💰 <span id="mil-banked">$0</span> guaranteed</div>
+  </div>
+  <div class="mil-body">
+    <!-- Question + options area -->
+    <div class="mil-question-area" id="mil-question-area">
+      <div style="color:var(--muted);font-size:.8rem;text-align:center;padding:40px">
+        Loading...
+      </div>
+    </div>
+    <!-- Prize ladder -->
+    <div class="mil-ladder" id="mil-ladder"></div>
+  </div>
+</div>
+
+<!-- PRACTICE SELECTOR -->
+<div id="prac-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">🔁 Practice — Select Topic</div>
+  </div>
+  <div class="sel-body"><div id="prac-sel-chapters"></div></div>
+</div>
+
+<!-- PRACTICE GAME -->
+<div id="prac-screen" class="screen">
+  <div class="jeop-hdr" style="background:var(--surf);border-bottom:1px solid var(--border);">
+    <button class="jeop-back" onclick="showPlanner('games')">← Topics</button>
+    <div>
+      <div class="jeop-title" id="prac-title" style="color:#34d399;">Practice</div>
+      <div class="jeop-sub" id="prac-sub">Drill Mode</div>
+    </div>
+    <div class="jeop-spacer"></div>
+    <div class="score-wrap">
+      <div class="score-lbl">STREAK&nbsp;</div>
+      <div class="score-val" id="prac-streak" style="color:#34d399;">0</div>
+    </div>
+    <div class="score-wrap" style="margin-left:16px">
+      <div class="score-lbl">CORRECT&nbsp;</div>
+      <div class="score-val" id="prac-correct-count" style="color:#22c55e;font-size:1.3rem;">0</div>
+    </div>
+    <div class="score-wrap" style="margin-left:8px">
+      <div class="score-lbl">/TOTAL&nbsp;</div>
+      <div class="score-val" id="prac-total-count" style="color:var(--muted);font-size:1.3rem;">0</div>
+    </div>
+  </div>
+  <div id="prac-body" style="flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 20px;gap:16px;overflow-y:auto;max-width:760px;margin:0 auto;width:100%;">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- WHEEL OF FORTUNE SELECTOR -->
+<div id="wof-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">🎡 Wheel / Hangman — Select Chapter</div>
+  </div>
+  <div class="sel-body"><div id="wof-sel-chapters"></div></div>
+</div>
+
+<!-- WHEEL OF FORTUNE / HANGMAN GAME -->
+<div id="wof-screen" class="screen">
+  <div class="wof-hdr">
+    <button class="jeop-back" onclick="showPlanner('games')" style="color:var(--muted);">← Chapters</button>
+    <div class="wof-title" id="wof-title">WHEEL OF FORTUNE</div>
+    <div class="wof-toggles">
+      <!-- Mode toggle -->
+      <div class="wof-toggle-group" id="wof-mode-group">
+        <button class="wof-tog active-pink" id="tog-wheel" onclick="wofSetMode('wheel')">🎡 Wheel</button>
+        <button class="wof-tog" id="tog-hang" onclick="wofSetMode('hangman')">💀 Hangman</button>
+      </div>
+      <!-- Clue toggle -->
+      <div class="wof-toggle-group" id="wof-clue-group">
+        <button class="wof-tog active" id="tog-def" onclick="wofSetClue('definition')">📖 Definition</button>
+        <button class="wof-tog" id="tog-topic" onclick="wofSetClue('topic')">🏷 Topic only</button>
+      </div>
+      <!-- Hangman difficulty (hidden in wheel mode) -->
+      <div class="wof-toggle-group" id="wof-diff-group" style="display:none">
+        <button class="wof-tog" id="tog-d3" onclick="wofSetDiff(3)">💀 3</button>
+        <button class="wof-tog active-blue" id="tog-d5" onclick="wofSetDiff(5)">💀 5</button>
+        <button class="wof-tog" id="tog-d7" onclick="wofSetDiff(7)">💀 7</button>
+      </div>
+    </div>
+  </div>
+  <div class="wof-body" id="wof-body">
+    <div style="color:var(--muted);padding:40px">Loading...</div>
+  </div>
+</div>
+
+<!-- WORD SEARCH SELECTOR -->
+<div id="ws-sel-screen" class="screen">
+  <div class="sel-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="sel-hdr-title">🔍 Word Search — Select Chapter</div>
+  </div>
+  <div class="sel-body"><div id="ws-sel-chapters"></div></div>
+</div>
+
+<!-- WORD SEARCH GAME -->
+<div id="ws-screen" class="screen">
+  <div class="jeop-hdr" style="flex-wrap:wrap;gap:8px;">
+    <button class="jeop-back" onclick="showPlanner('games')">← Chapters</button>
+    <div>
+      <div class="jeop-title" id="ws-title" style="color:#f472b6;">Word Search</div>
+      <div class="jeop-sub" id="ws-sub">Find all the hidden words</div>
+    </div>
+    <div class="jeop-spacer"></div>
+    <!-- Toggle controls -->
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <div class="ws-toggle-group" id="ws-tg-back">
+        <button class="ws-tog active" id="ws-tog-back-on"  onclick="wsSetOption('backwards',true)">↩ Backwards</button>
+        <button class="ws-tog"        id="ws-tog-back-off" onclick="wsSetOption('backwards',false)">→ Forward only</button>
+      </div>
+      <div class="ws-toggle-group" id="ws-tg-diag">
+        <button class="ws-tog active" id="ws-tog-diag-on"  onclick="wsSetOption('diagonal',true)">⤡ Diagonal</button>
+        <button class="ws-tog"        id="ws-tog-diag-off" onclick="wsSetOption('diagonal',false)">✚ No diagonal</button>
+      </div>
+    </div>
+    <div class="score-wrap" style="margin-left:4px">
+      <div class="score-lbl">FOUND&nbsp;</div>
+      <div class="score-val" id="ws-found-val" style="color:#f472b6;">0</div>
+    </div>
+    <div class="score-val" style="color:var(--muted);font-size:1.1rem;padding:0 2px;">/</div>
+    <div class="score-val" id="ws-total-val" style="color:var(--muted);font-size:1.3rem;">0</div>
+    <button class="ctrl-btn" id="ws-new-btn" onclick="wsBuild()">🔀 New Puzzle</button>
+    <button class="ctrl-btn" id="ws-reveal-btn" onclick="wsRevealAll()" style="border-color:rgba(245,200,66,.3);color:var(--gold);">💡 Reveal All</button>
+  </div>
+  <!-- Main layout: grid + word list -->
+  <div id="ws-body" style="flex:1;display:flex;gap:0;overflow:hidden;min-height:0;">
+    <div id="ws-grid-wrap" style="flex:0 0 auto;overflow:auto;padding:16px;display:flex;align-items:flex-start;justify-content:center;">
+      <div id="ws-grid"></div>
+    </div>
+    <div id="ws-words-panel" style="width:220px;min-width:180px;overflow-y:auto;padding:14px 16px;border-left:1px solid var(--border);flex-shrink:0;">
+      <div style="font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">Words to Find</div>
+      <div id="ws-word-list"></div>
+    </div>
+  </div>
+  <!-- Definition tooltip area -->
+  <div id="ws-def-bar" style="background:var(--surf);border-top:1px solid var(--border);padding:8px 20px;font-size:.8rem;color:var(--muted);font-family:var(--mono);min-height:36px;flex-shrink:0;line-height:1.5;"></div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen" class="screen">
+  <div class="admin-hdr">
+    <button class="jeop-back" id="admin-back-btn">← Hub</button>
+    <div class="admin-hdr-title">Question Manager</div>
+    <div style="display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap;">
+      <!-- Questions CSV -->
+      <button class="ctrl-btn" onclick="exportCSV()" style="background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--green);">⬇ Questions CSV</button>
+      <label class="ctrl-btn" style="cursor:pointer;background:rgba(61,139,255,.08);border-color:rgba(61,139,255,.3);color:var(--blue);">
+        ⬆ Questions CSV<input type="file" accept=".csv" style="display:none" onchange="importCSV(this.files[0]);this.value=''">
+      </label>
+      <!-- Vocab CSV (unified: vocab + ions + elements in one file) -->
+      <button class="ctrl-btn" onclick="exportVocabCSV()" style="background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);">⬇ Vocab CSV</button>
+      <label class="ctrl-btn" style="cursor:pointer;background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.3);color:#c084fc;">
+        ⬆ Vocab CSV<input type="file" accept=".csv" style="display:none" onchange="importVocabCSV(this.files[0]);this.value=''">
+      </label>
+      <!-- Clear buttons -->
+      <button class="ctrl-btn" onclick="clearImported()" style="border-color:rgba(239,68,68,.3);color:var(--red);">✕ Clear Questions</button>
+      <button class="ctrl-btn" onclick="clearVocab()" style="border-color:rgba(239,68,68,.2);color:rgba(239,68,68,.6);">✕ Clear Vocab</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="a-tab on" id="tab-list" onclick="showAdminTab('list')">📋 Questions</button>
+      <button class="a-tab" id="tab-vocab" onclick="showAdminTab('vocab')">📖 Vocab</button>
+      <button class="a-tab" id="tab-reassign" onclick="showAdminTab('reassign')">🔀 Reassign Topics</button>
+      <button class="a-tab" id="tab-boards" onclick="showAdminTab('boards')">🔗 Conn Boards</button>
+      <button class="a-tab" id="tab-add" onclick="showAdminTab('add')">➕ Add Question</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <!-- LIST -->
+    <div id="admin-list">
+      <div class="q-list-controls">
+        <select class="q-filter" id="filter-chapter" onchange="renderQList()" style="width:150px">
+          <option value="">All Chapters</option>
+        </select>
+        <select class="q-filter" id="filter-topic" onchange="renderQList()" style="width:150px">
+          <option value="">All Topics</option>
+        </select>
+        <select class="q-filter" id="filter-cat" onchange="renderQList()">
+          <option value="">All Categories</option>
+        </select>
+        <select class="q-filter" id="filter-pts" onchange="renderQList()" style="width:130px">
+          <option value="">All Points</option>
+          <option>200</option><option>400</option><option>600</option><option>800</option><option>1000</option>
+        </select>
+        <select class="q-filter" id="filter-type" onchange="renderQList()" style="width:140px">
+          <option value="">All Types</option>
+          <option value="mc">Multiple Choice</option>
+          <option value="numeric">Numeric</option>
+          <option value="tf">True / False</option>
+        </select>
+        <select class="q-filter" id="filter-enabled" onchange="renderQList()" style="width:130px">
+          <option value="">All Status</option>
+          <option value="1">✓ Enabled</option>
+          <option value="0">✕ Disabled</option>
+        </select>
+        <span class="q-count" id="q-count"></span>
+      </div>
+      <div class="q-cards" id="q-cards"></div>
+    </div>
+    <!-- REASSIGN TOPICS -->
+    <div id="admin-reassign" style="display:none">
+      <div style="max-width:820px;margin:0 auto;">
+        <div style="font-size:.75rem;color:var(--muted);font-family:var(--mono);line-height:1.8;
+          background:var(--surf);border:1px solid var(--border2);border-radius:10px;
+          padding:12px 16px;margin-bottom:18px;">
+          <b style="color:var(--text)">How this works:</b> Change the Chapter for any topic below.
+          All questions and vocab in that topic will be moved, and their IDs will be updated
+          to reflect the new chapter key. Use the export buttons to save updated CSVs afterward.
+        </div>
+        <div id="reassign-table"></div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;" id="reassign-actions" style="display:none">
+          <button class="form-save" id="reassign-apply-btn">Apply Changes</button>
+          <button class="form-cancel" id="reassign-reset-btn">Reset</button>
+          <span id="reassign-msg" style="font-family:var(--mono);font-size:.72rem;color:var(--green);
+            display:none;align-items:center;padding:6px 0;"></span>
+        </div>
+      </div>
+    </div>
+    <!-- ADD/EDIT -->
+    <!-- VOCAB MANAGER -->
+    <div id="admin-vocab" style="display:none">
+      <div style="max-width:900px;margin:0 auto;">
+        <div class="q-list-controls" style="flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <select class="q-filter" id="vocab-filter-chapter" onchange="renderVocabList()" style="width:180px">
+            <option value="">All Chapters</option>
+          </select>
+          <select class="q-filter" id="vocab-filter-enabled" onchange="renderVocabList()" style="width:130px">
+            <option value="">All Status</option>
+            <option value="1">✓ Enabled</option>
+            <option value="0">✕ Disabled</option>
+          </select>
+          <input class="q-filter" id="vocab-search" type="text" placeholder="Search word…" oninput="renderVocabList()" style="width:160px">
+          <button class="ctrl-btn" onclick="vocabToggleAll(true)"  style="background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--green);">✓ Enable All</button>
+          <button class="ctrl-btn" onclick="vocabToggleAll(false)" style="background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:var(--red);">✕ Disable All</button>
+          <span class="q-count" id="vocab-count"></span>
+        </div>
+        <div id="vocab-cards" style="display:flex;flex-direction:column;gap:6px;"></div>
+      </div>
+    </div>
+
+    <!-- CONNECTIONS BOARD BUILDER -->
+    <div id="admin-boards" style="display:none">
+      <div style="max-width:860px;margin:0 auto;">
+        <div style="background:var(--surf);border:1px solid var(--border2);border-radius:12px;padding:20px 22px;margin-bottom:20px;">
+          <div style="font-family:var(--disp);font-size:1.1rem;letter-spacing:.05em;color:var(--gold);margin-bottom:4px;">🔗 Board Builder</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:16px;">Define 4 groups of 4 words each. Each group is one colour on the board.</div>
+          <div style="margin-bottom:14px;">
+            <label style="font-family:var(--mono);font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;">Board Name</label>
+            <input id="cb-name" class="f-input" placeholder="e.g. Gas Laws — Chapter 9" style="margin-top:4px;max-width:340px;">
+          </div>
+          <div id="cb-groups"></div>
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+            <button class="form-save" onclick="saveBoardToBank()">💾 Save to Board Bank</button>
+            <button class="ctrl-btn" onclick="launchCustomBoard()" style="background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.3);color:#f472b6;">▶ Play This Board</button>
+            <button class="form-cancel" onclick="_cbClear()">✕ Clear</button>
+          </div>
+          <div id="cb-msg" style="font-family:var(--mono);font-size:.7rem;color:var(--green);margin-top:10px;display:none;"></div>
+        </div>
+        <div style="font-family:var(--disp);font-size:1rem;letter-spacing:.05em;color:var(--text);margin-bottom:10px;">📦 Board Bank</div>
+        <div id="cb-bank"></div>
+      </div>
+    </div>
+
+    <div id="admin-add" style="display:none">
+        <input type="hidden" id="f-edit-idx">
+        <div class="form-row c3">
+          <div>
+            <label class="f-label">Chapter</label>
+            <select class="f-select" id="f-chapter" onchange="onChapterChange()">
+            </select>
+          </div>
+          <div>
+            <label class="f-label">Topic / Keyword</label>
+            <select class="f-select" id="f-topic">
+            </select>
+          </div>
+          <div>
+            <label class="f-label">Category <span class="sec-hint">(board column)</span></label>
+            <select class="f-select" id="f-cat" onchange="onCatChange()">
+              <option value="__custom__">+ New category…</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row c3">
+          <div id="f-custom-wrap" style="display:none">
+            <label class="f-label">New Category Name</label>
+            <input class="f-input" id="f-cat-custom" placeholder="e.g. Stoichiometry">
+          </div>
+          <div>
+            <label class="f-label">Point Value</label>
+            <select class="f-select" id="f-pts">
+              <option value="200">$200 — Easy</option>
+              <option value="400">$400</option>
+              <option value="600" selected>$600</option>
+              <option value="800">$800</option>
+              <option value="1000">$1000 — Hard</option>
+            </select>
+          </div>
+          <div>
+            <label class="f-label">Question Type</label>
+            <select class="f-select" id="f-type" onchange="onTypeChange()">
+              <option value="mc">Multiple Choice</option>
+              <option value="numeric">Numeric (auto-graded)</option>
+              <option value="tf">True / False</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row c1">
+          <div>
+            <label class="f-label">Question</label>
+            <textarea class="f-textarea" id="f-q" rows="3" placeholder="Type the question here…"></textarea>
+          </div>
+        </div>
+        <!-- Given values -->
+        <div class="form-section">
+          <div class="sec-title">Given Values <span class="sec-hint">(optional — shown in a data box to students)</span></div>
+          <div id="given-rows"></div>
+          <button class="add-row-btn" id="add-given-btn">+ Add given value</button>
+        </div>
+        <!-- MC -->
+        <div id="mc-section" class="form-section">
+          <div class="sec-title">Answer Options <span class="sec-hint">(click "Mark Correct" on the right answer)</span></div>
+          <div class="mc-builder" id="mc-builder"></div>
+          <button class="add-row-btn" id="add-mc-btn" style="margin-top:6px">+ Add option</button>
+        </div>
+        <!-- Numeric -->
+        <div id="num-section" class="form-section" style="display:none">
+          <div class="sec-title">Numeric Answer</div>
+          <div class="form-row c3">
+            <div><label class="f-label">Correct Answer</label><input class="f-input" id="f-answer" type="number" step="any" placeholder="e.g. 3.25"></div>
+            <div><label class="f-label">Tolerance (±)</label><input class="f-input" id="f-tol" type="number" step="any" value="0.1"></div>
+            <div><label class="f-label">Unit Label</label><input class="f-input" id="f-unit" placeholder="e.g. atm"></div>
+          </div>
+        </div>
+        <!-- True / False -->
+        <div id="tf-section" class="form-section" style="display:none">
+          <div class="sec-title">True / False Statement <span class="sec-hint">(the statement shown to the student — must be unambiguously true or false)</span></div>
+          <div class="form-row c1">
+            <div>
+              <label class="f-label">Statement</label>
+              <textarea class="f-textarea" id="f-tf-stmt" rows="2" placeholder="e.g. Increasing pressure at constant temperature causes gas volume to decrease."></textarea>
+            </div>
+          </div>
+          <div class="form-row c2">
+            <div>
+              <label class="f-label">This statement is…</label>
+              <select class="f-select" id="f-tf-answer">
+                <option value="true">✓ TRUE</option>
+                <option value="false">✗ FALSE</option>
+              </select>
+            </div>
+            <div>
+              <label class="f-label">Explanation <span class="sec-hint">(shown after answer)</span></label>
+              <input class="f-input" id="f-tf-explanation" placeholder="e.g. Boyle's Law: P and V are inversely proportional.">
+            </div>
+          </div>
+        </div>
+        <div class="form-row c1">
+          <div>
+            <label class="f-label">Hint <span class="sec-hint">(shown when student clicks 💡)</span></label>
+            <input class="f-input" id="f-hint" placeholder="A helpful nudge toward the answer…">
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="sec-title">Step-by-Step Solution</div>
+          <div class="steps-builder" id="steps-builder"></div>
+          <button class="add-row-btn" id="add-step-btn">+ Add step</button>
+        </div>
+        <div class="form-footer">
+          <button class="form-save" id="form-save-btn">💾 Save Question</button>
+          <button class="form-cancel" id="form-cancel-btn">Cancel</button>
+          <span class="form-msg" id="form-msg">✓ Saved!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONNECTIONS SCREEN -->
+<div id="conn-screen" class="screen">
+  <div class="conn-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="conn-title">CONNECTIONS</div>
+    <div style="flex:1"></div>
+    <div id="conn-chapter-lbl" style="font-family:var(--mono);font-size:.65rem;color:var(--muted);"></div>
+    <button class="ctrl-btn" onclick="connNewGame()" style="margin-left:8px;">↺ New Game</button>
+  </div>
+  <div class="conn-body" id="conn-body">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- TRUE / FALSE RAPID FIRE SCREEN -->
+<div id="tf-screen" class="screen">
+  <div class="tf-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="tf-title">⚡ TRUE / FALSE</div>
+    <div class="tf-score-strip">
+      <span class="tf-score-lbl">PTS</span>
+      <span class="tf-score-val" id="tf-score-val">0</span>
+      <span class="tf-acc" id="tf-correct-val">0</span><span class="tf-score-lbl">/</span><span class="tf-acc" id="tf-total-val">0</span>
+    </div>
+  </div>
+  <div id="tf-body">
+    <!-- populated by cr-games-tf.js -->
+  </div>
+</div>
+
+<!-- FORMULA LAB SCREEN -->
+<div id="formula-screen" class="screen"></div>
+
+<!-- WORDLE SCREEN -->
+<div id="wordle-screen" class="screen">
+  <div class="wdl-hdr">
+    <button class="jeop-back" onclick="showHub()">← Hub</button>
+    <div class="wdl-title">CHEM WORDLE</div>
+    <div id="wdl-streak-hdr" class="wdl-streak" style="margin-left:8px;"></div>
+    <div class="wdl-mode-group" style="margin-left:auto;"></div>
+    <button class="ctrl-btn" onclick="wdlNewGame()" style="margin-left:8px;">↺ New Word</button>
+  </div>
+  <div class="wdl-body" id="wdl-body">
+    <!-- populated by JS -->
+  </div>
+  <div class="wdl-toast" id="wdl-toast"></div>
+</div>
+<!-- ═══════════════════════════════════════════════════════════════
+     ChemReview — HTML Shell
+     Load order matters. cr-data.js must load first (no DOM deps).
+     cr-planner.js must load last (calls functions from all others).
+     ═══════════════════════════════════════════════════════════════ -->
+<script src="cr-data.js"></script>
+<script src="cr-core.js"></script>
+<script src="cr-admin.js"></script>
+<script src="cr-question-engine.js"></script>
+<script src="cr-jeopardy.js"></script>
+<script src="cr-vocab-engine.js"></script>
+<script src="cr-games-questions.js"></script>
+<script src="cr-games-vocab.js"></script>
+<script src="cr-chem-formula.js"></script>
+<script src="cr-games-tf.js"></script>
+<script src="cr-planner.js"></script>
+
+<!-- SIG FIG POPUP -->
+<div id="sf-overlay">
+  <div class="sf-box">
+    <div class="sf-title">⚠ Significant Figures</div>
+    <div class="sf-body" id="sf-msg"></div>
+    <div class="sf-rules">
+1. Non-zero digits are always significant&#10;2. Zeros between non-zeros are significant&#10;3. Trailing zeros after a decimal point are significant&#10;4. Leading zeros are never significant
+    </div>
+    <button class="sf-ok" onclick="document.getElementById('sf-overlay').classList.remove('open')">Got it</button>
+  </div>
+</div>
+
+<!-- SESSION BAR -->
+<div id="session-bar">
+  <div class="sbar-label">Studying:</div>
+  <div class="sbar-chips" id="sbar-chips"></div>
+  <div class="sbar-stats" id="sbar-stats"></div>
+  <div class="sbar-btns">
+    <button class="sbar-btn sbar-btn-switch" onclick="showPlanner('games')">🎮 Switch Game</button>
+    <button class="sbar-btn sbar-btn-report" onclick="openSessionReport()">📊 Report</button>
+  </div>
+</div>
+
+<!-- SESSION REPORT MODAL -->
+<div id="session-report-overlay">
+  <div class="srep-modal">
+    <div class="srep-hdr">
+      <div class="srep-title">📊 Session Report</div>
+      <button class="srep-x" onclick="document.getElementById('session-report-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="srep-body" id="srep-body"></div>
+  </div>
+</div>
+
+</body>
+</html>
