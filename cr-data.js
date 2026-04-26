@@ -702,44 +702,64 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 // Only loads if localStorage is currently empty for that data type,
 // so a manual import always takes precedence.
 async function autoLoadCSVs(){
-  if (location.protocol === 'file:') return;
+  if(location.protocol === 'file:') return; // fetch doesn't work over file://
 
   const tryFetch = async (filename) => {
     try {
       const res = await fetch(filename);
-      if (!res.ok) return null;
+      if(!res.ok) return null;
       return await res.text();
-    } catch(e) { return null; }
+    } catch(e){ return null; }
   };
 
-  // Questions
-  if (!customBank.length) {
-    const text = await tryFetch('./questions.csv');
-    if (text) {
-      const imported = csvToQuestions(text);
-      if (imported.length) {
-        customBank = imported;
-        _saveCustom();
-        rebuildChapters();
-        console.info(`[cr-data] Auto-loaded questions.csv — ${imported.length} questions`);
-      }
+  // Use origin + repo-root path so this works on GitHub Pages subdomains
+  // and local dev servers equally. Strips any trailing filename from pathname
+  // so /index.html → / and / → /
+  const base = window.location.origin + '/';
+
+  let didLoad = false;
+
+  // Questions — only auto-load if bank is empty
+  if(!customBank.length){
+    const text = await tryFetch(base + 'questions.csv');
+    if(text){
+      try {
+        const imported = csvToQuestions(text);
+        if(imported.length){
+          customBank = imported;
+          _saveCustom();
+          rebuildChapters();
+          console.info(`[cr-data] Auto-loaded questions.csv — ${imported.length} questions`);
+          didLoad = true;
+        }
+      } catch(e){ console.warn('[cr-data] Auto-load questions.csv failed:', e.message); }
     }
   }
 
-  // Vocab (same pattern)
-  if (!vocabBank.length) {
-    const text = await tryFetch('./vocab.csv');
-    if (text) {
-      const imported = csvToVocab(text);
-      if (imported.length) {
-        vocabBank = imported;
-        _saveVocab();
-        rebuildChapters();
-        console.info(`[cr-data] Auto-loaded vocab.csv — ${imported.length} entries`);
-      }
+  // Vocab — only auto-load if bank is empty
+  if(!vocabBank.length){
+    const text = await tryFetch(base + 'vocab.csv');
+    if(text){
+      try {
+        const imported = csvToVocab(text);
+        if(imported.length){
+          vocabBank = imported;
+          _saveVocab();
+          rebuildChapters();
+          console.info(`[cr-data] Auto-loaded vocab.csv — ${imported.length} entries`);
+          didLoad = true;
+        }
+      } catch(e){ console.warn('[cr-data] Auto-load vocab.csv failed:', e.message); }
     }
   }
 
-  if (typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
+  // Re-render hub widget if anything loaded
+  if(didLoad && typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
 }
 
+// Auto-load CSVs when the DOM is ready (or immediately if already loaded)
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', autoLoadCSVs);
+} else {
+  autoLoadCSVs();
+}
