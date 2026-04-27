@@ -1367,6 +1367,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .wdl-tile[data-state="correct"]{background:#166534;border-color:#166534;color:#fff;}
 .wdl-tile[data-state="present"]{background:#854d0e;border-color:#854d0e;color:#fff;}
 .wdl-tile[data-state="absent"]{background:#374151;border-color:#374151;color:#aaa;}
+.wdl-tile.wdl-space {
+  background: transparent;
+  border: none;
+  pointer-events: none;
+}
 @keyframes wdlPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes wdlFlip{
   0%{transform:rotateX(0)}
