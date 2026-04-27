@@ -701,73 +701,72 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 // or if running from file:// (fetch blocked).
 // Only loads if localStorage is currently empty for that data type,
 // so a manual import always takes precedence.
-// Simple hash — turns CSV text into a short fingerprint string.
-// If the file changes on the server, the hash changes, triggering a wipe+reload.
-function _csvHash(text){
-  let h = 0;
-  for(let i = 0; i < text.length; i++){ h = Math.imul(31, h) + text.charCodeAt(i) | 0; }
-  return (h >>> 0).toString(36);
-}
-
 async function autoLoadCSVs(){
-  if(location.protocol === 'file:') return;
-
-  const base = window.location.origin + '/';
+  if(location.protocol === 'file:') return; // fetch doesn't work over file://
 
   const tryFetch = async (filename) => {
     try {
-      // cache-busting param forces GitHub Pages CDN to serve the latest file
-      const res = await fetch(filename + '?v=' + Date.now());
+      const res = await fetch(filename);
       if(!res.ok) return null;
       return await res.text();
     } catch(e){ return null; }
   };
 
+  // Use origin + repo-root path so this works on GitHub Pages subdomains
+  // and local dev servers equally. Strips any trailing filename from pathname
+  // so /index.html → / and / → /
+  const base = window.location.origin + '/';
+
   let didLoad = false;
 
-  // --- Questions: always fetch, wipe+replace if CSV changed ---
-  const qText = await tryFetch(base + 'questions.csv');
-  if(qText){
-    const newHash = _csvHash(qText);
-    const oldHash = localStorage.getItem('chemq_questions_hash');
-    if(newHash !== oldHash){
+  // Questions — only auto-load if bank is empty
+  if(!customBank.length){
+    const text = await tryFetch(base + 'questions.csv');
+    if(text){
       try {
-        const imported = csvToQuestions(qText);
+        const imported = csvToQuestions(text);
         if(imported.length){
           customBank = imported;
           _saveCustom();
-          localStorage.setItem('chemq_questions_hash', newHash);
-          // Wipe study plan so stale selections/results don't reference old questions
-          localStorage.removeItem('chemq_study_plan');
           rebuildChapters();
-          console.info(`[cr-data] Auto-loaded questions.csv (updated) — ${imported.length} questions`);
+          console.info(`[cr-data] Auto-loaded questions.csv — ${imported.length} questions`);
           didLoad = true;
         }
       } catch(e){ console.warn('[cr-data] Auto-load questions.csv failed:', e.message); }
     }
   }
 
-  // --- Vocab: always fetch, wipe+replace if CSV changed ---
-  const vText = await tryFetch(base + 'vocab.csv');
-  if(vText){
-    const newHash = _csvHash(vText);
-    const oldHash = localStorage.getItem('chemq_vocab_hash');
-    if(newHash !== oldHash){
+  // Vocab — only auto-load if bank is empty
+  if(!vocabBank.length){
+    const text = await tryFetch(base + 'vocab.csv');
+    if(text){
       try {
-        const imported = csvToVocab(vText);
+        const imported = csvToVocab(text);
         if(imported.length){
           vocabBank = imported;
           _saveVocab();
-          localStorage.setItem('chemq_vocab_hash', newHash);
           rebuildChapters();
-          console.info(`[cr-data] Auto-loaded vocab.csv (updated) — ${imported.length} entries`);
+          console.info(`[cr-data] Auto-loaded vocab.csv — ${imported.length} entries`);
           didLoad = true;
         }
       } catch(e){ console.warn('[cr-data] Auto-load vocab.csv failed:', e.message); }
     }
   }
 
+  // Re-render hub widget if anything loaded
   if(didLoad && typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
+}
+
+// Force re-fetch both CSVs regardless of cached hash.
+// Keeps study plan/progress intact — only replaces questions & vocab.
+async function refreshContentFromServer(){
+  localStorage.removeItem('chemq_questions_hash');
+  localStorage.removeItem('chemq_vocab_hash');
+  await autoLoadCSVs();
+  if(typeof renderStudyPlanWidget === 'function') renderStudyPlanWidget();
+  if(typeof renderQList         === 'function') renderQList();
+  if(typeof renderVocabList     === 'function') renderVocabList();
+  alert('✅ Content refreshed from server!');
 }
 
 // Auto-load CSVs when the DOM is ready (or immediately if already loaded)
