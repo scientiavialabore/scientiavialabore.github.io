@@ -290,6 +290,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   background:linear-gradient(135deg,#f5c842 0%,#ff8c42 50%,#ff5f6d 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:4px;}
 .hub-logo p{color:var(--muted);font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;}
+.hub-tag{font-family:var(--mono);font-size:.68rem;color:var(--muted);border:1px solid var(--border2);
+  background:var(--surf);padding:4px 12px;border-radius:20px;display:inline-block;margin-top:8px;}
 .game-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:860px;}
 .game-card{width:188px;background:var(--surf);border:1px solid var(--border);border-radius:14px;
   padding:24px 16px 18px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
@@ -1490,6 +1492,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div id="hub-screen" class="screen active">
   <div class="hub-logo">
     <h1>ChemReview</h1>
+    <p>Chemistry Study Platform — v1</p>
+    <div class="hub-tag">⚗ Select a game to begin</div>
   </div>
   <!-- Featured daily games -->
   <div style="display:flex;gap:8px;margin-bottom:4px;align-items:center;">
@@ -1564,6 +1568,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <button class="ctrl-btn" onclick="showPlanner('topics')" style="background:rgba(129,140,248,.08);border-color:rgba(129,140,248,.3);color:#818cf8;">📋 Study Planner</button>
     <button class="ctrl-btn" onclick="showPlanner('games')" style="background:rgba(61,139,255,.08);border-color:rgba(61,139,255,.3);color:var(--blue);">🎮 Play</button>
     <button class="ctrl-btn" onclick="showAdmin()" style="background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.25);color:var(--gold);">✎ Manage Questions</button>
+    <button class="ctrl-btn" onclick="refreshContentFromServer()" style="background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);">🔄 Refresh Content</button>
     <button class="ctrl-btn" onclick="showVisualLab()" style="background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.3);color:var(--cyan);">🎨 Visual Lab</button>
   </div>
   <div id="hub-notice" style="font-family:var(--mono);font-size:.68rem;color:var(--muted);text-align:center;max-width:500px;line-height:1.8;background:var(--surf);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;"></div>
@@ -1913,6 +1918,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <!-- Clear buttons -->
       <button class="ctrl-btn" onclick="clearImported()" style="border-color:rgba(239,68,68,.3);color:var(--red);">✕ Clear Questions</button>
       <button class="ctrl-btn" onclick="clearVocab()" style="border-color:rgba(239,68,68,.2);color:rgba(239,68,68,.6);">✕ Clear Vocab</button>
+      <button class="ctrl-btn" onclick="refreshContentFromServer()" style="border-color:rgba(6,182,212,.3);color:var(--cyan);">🔄 Refresh Content</button>
     </div>
     <div class="admin-tabs">
       <button class="a-tab on" id="tab-list" onclick="showAdminTab('list')">📋 Questions</button>
