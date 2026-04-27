@@ -515,8 +515,8 @@ function renderPlannerScreen(){
     const btn = document.createElement('button');
     btn.className = 'ctrl-btn';
     btn.style.cssText = 'font-size:.65rem;padding:4px 12px;border-radius:14px;transition:all .15s;' +
-      (isOn ? `border-color:\${color};color:\${color};background:\${color}22;` : 'border-color:var(--border2);color:var(--muted);');
-    btn.innerHTML = `\${isOn?'✓ ':''}\${label} <span style="opacity:.6">(\${count})</span>`;
+      (isOn ? `border-color:${color};color:${color};background:${color}22;` : 'border-color:var(--border2);color:var(--muted);');
+    btn.innerHTML = `${isOn?'✓ ':''}${label} <span style="opacity:.6">(${count})</span>`;
     btn.addEventListener('click', () => { vs[key]=!vs[key]; _spSave(); renderPlannerScreen(); });
     controls.appendChild(btn);
   });
@@ -526,7 +526,7 @@ function renderPlannerScreen(){
   previewSpan.style.cssText = 'font-family:var(--mono);font-size:.58rem;margin-left:auto;' +
     (pool.length ? 'color:var(--muted);' : 'color:var(--red);');
   previewSpan.textContent = pool.length
-    ? `📦 \${pool.length} vocab · 🟩 \${_getActiveVocabPool('wordle').length} wordle · 🔗 \${pool.filter(v=>!!v.connections_group).length} conn`
+    ? `📦 ${pool.length} vocab · 🟩 ${_getActiveVocabPool('wordle').length} wordle · 🔗 ${pool.filter(v=>!!v.connections_group).length} conn`
     : '⚠ No vocab selected';
   controls.appendChild(previewSpan);
   wrap.appendChild(controls);
