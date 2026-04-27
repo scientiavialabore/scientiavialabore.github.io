@@ -1477,13 +1477,13 @@ function _wdlPickWord(mode){
     if(!vocabPool.length){
       vocabPool = vocabBank.filter(v =>
         v.enabled !== false && v.type !== 'ion' && v.type !== 'element' &&
-        v.wordle_eligible !== false && !v.is_multiword
+        v.wordle_eligible !== false
       );
     }
     // Fallback 2: any vocab (ignore wordle_eligible flag)
     if(!vocabPool.length){
       vocabPool = vocabBank.filter(v =>
-        v.enabled !== false && v.type !== 'ion' && v.type !== 'element' && !v.is_multiword
+        v.enabled !== false && v.type !== 'ion' && v.type !== 'element'
       );
     }
     pool = vocabPool.map(v => ({
@@ -1544,9 +1544,10 @@ function wdlNewGame(){
 function _wdlRender(){
   const s = wdlState;
   if(!s) return;
-  const wordLen = s.word.length;
-  const tileSize = wordLen <= 6 ? 52 : wordLen <= 9 ? 44 : 38;
-  const fontSize = wordLen <= 6 ? '1.3rem' : wordLen <= 9 ? '1.1rem' : '.95rem';
+  const wordLen = s.word.length;             // total chars incl. spaces
+  const letterLen = s.word.replace(/ /g,'').length; // only letter positions
+  const tileSize = letterLen <= 6 ? 52 : letterLen <= 9 ? 44 : 38;
+  const fontSize = letterLen <= 6 ? '1.3rem' : letterLen <= 9 ? '1.1rem' : '.95rem';
 
   const body = document.getElementById('wdl-body');
   body.innerHTML = '';
@@ -1583,7 +1584,7 @@ function _wdlRender(){
   // ── Word length hint
   const lenHint = document.createElement('div');
   lenHint.className = 'wdl-length-hint';
-  lenHint.textContent = `${wordLen} letters · ${WDL_MAX_GUESSES - s.guesses.length} guess${WDL_MAX_GUESSES-s.guesses.length!==1?'es':''} remaining`;
+  lenHint.textContent = `${letterLen} letter${letterLen!==1?'s':''} · ${WDL_MAX_GUESSES - s.guesses.length} guess${WDL_MAX_GUESSES-s.guesses.length!==1?'es':''} remaining`;
   body.appendChild(lenHint);
 
   // ── Guess grid
@@ -1596,24 +1597,36 @@ function _wdlRender(){
     row.className = 'wdl-row';
     row.id = `wdl-row-${r}`;
 
-    for(let c = 0; c < wordLen; c++){
-      const tile = document.createElement('div');
-      tile.className = 'wdl-tile';
-      tile.id = `wdl-tile-${r}-${c}`;
-      tile.style.cssText = `width:${tileSize}px;height:${tileSize}px;font-size:${fontSize};`;
+    // Build an index mapping: tilePos (0..wordLen-1) → letterIdx (0..letterLen-1)
+    // Space positions have letterIdx = -1
+    let letterIdx = 0;
+    const tileLetterIdx = s.word.split('').map(ch => ch === ' ' ? -1 : letterIdx++);
 
-      if(r < s.guesses.length){
-        // Committed guess
-        const g = s.guesses[r];
-        tile.textContent = g.guess[c] || '';
-        tile.dataset.state = g.result[c] || 'absent';
-        tile.classList.add('flip');
-        tile.style.animationDelay = `${c * 80}ms`;
-      } else if(r === s.currentRow && !s.gameOver){
-        // Active row
-        tile.textContent = s.currentInput[c] || '';
-        tile.classList.toggle('filled', !!s.currentInput[c]);
-        tile.classList.add('active-row');
+    for(let c = 0; c < wordLen; c++){
+      const isSpace = s.word[c] === ' ';
+      const tile = document.createElement('div');
+      tile.id = `wdl-tile-${r}-${c}`;
+
+      if(isSpace){
+        tile.className = 'wdl-tile wdl-space';
+        tile.style.cssText = `width:${Math.round(tileSize*0.4)}px;height:${tileSize}px;`;
+      } else {
+        tile.className = 'wdl-tile';
+        tile.style.cssText = `width:${tileSize}px;height:${tileSize}px;font-size:${fontSize};`;
+        const li = tileLetterIdx[c];
+        if(r < s.guesses.length){
+          // Committed guess — g.guess is packed (no spaces), index by letterIdx
+          const g = s.guesses[r];
+          tile.textContent = g.guess[li] || '';
+          tile.dataset.state = g.result[li] || 'absent';
+          tile.classList.add('flip');
+          tile.style.animationDelay = `${li * 80}ms`;
+        } else if(r === s.currentRow && !s.gameOver){
+          // Active row — currentInput is packed letters
+          tile.textContent = s.currentInput[li] || '';
+          tile.classList.toggle('filled', !!s.currentInput[li]);
+          tile.classList.add('active-row');
+        }
       }
       row.appendChild(tile);
     }
@@ -1707,7 +1720,7 @@ function _wdlAttachKeyboard(){
 function _wdlHandleKey(key){
   const s = wdlState;
   if(!s || s.gameOver) return;
-  const wordLen = s.word.length;
+  const letterLen = s.word.replace(/ /g,'').length;
 
   if(key === 'BACKSPACE'){
     if(s.currentInput.length > 0){ s.currentInput.pop(); _wdlUpdateActiveTiles(); }
@@ -1717,37 +1730,51 @@ function _wdlHandleKey(key){
     _wdlSubmitGuess();
     return;
   }
-  if(s.currentInput.length < wordLen && /^[A-Z]$/.test(key)){
+  if(s.currentInput.length < letterLen && /^[A-Z]$/.test(key)){
     s.currentInput.push(key);
     _wdlUpdateActiveTiles();
-    // Pop animation on filled tile
-    const tile = document.getElementById(`wdl-tile-${s.currentRow}-${s.currentInput.length-1}`);
-    if(tile){ tile.classList.remove('pop'); void tile.offsetWidth; tile.classList.add('pop'); }
+    // Pop animation on filled tile — find the tile position for this letter index
+    const li = s.currentInput.length - 1;
+    let letterIdx = 0;
+    for(let c = 0; c < s.word.length; c++){
+      if(s.word[c] === ' ') continue;
+      if(letterIdx === li){
+        const tile = document.getElementById(`wdl-tile-${s.currentRow}-${c}`);
+        if(tile){ tile.classList.remove('pop'); void tile.offsetWidth; tile.classList.add('pop'); }
+        break;
+      }
+      letterIdx++;
+    }
   }
 }
 
 function _wdlUpdateActiveTiles(){
   const s = wdlState;
   const wordLen = s.word.length;
+  let letterIdx = 0;
   for(let c = 0; c < wordLen; c++){
+    if(s.word[c] === ' ') continue;
+    const li = letterIdx++;
     const tile = document.getElementById(`wdl-tile-${s.currentRow}-${c}`);
     if(!tile) continue;
-    tile.textContent = s.currentInput[c] || '';
-    tile.classList.toggle('filled', !!s.currentInput[c]);
+    tile.textContent = s.currentInput[li] || '';
+    tile.classList.toggle('filled', !!s.currentInput[li]);
   }
 }
 
 // ── Submit a guess ────────────────────────────────────────────
 function _wdlSubmitGuess(){
   const s = wdlState;
-  const wordLen = s.word.length;
-  if(s.currentInput.length !== wordLen){
+  const wordLen   = s.word.length;
+  const letterLen = s.word.replace(/ /g,'').length;
+  if(s.currentInput.length !== letterLen){
     _wdlShakeRow(s.currentRow);
-    _wdlToast(`Need ${wordLen} letters`);
+    _wdlToast(`Need ${letterLen} letters`);
     return;
   }
-  const guess = s.currentInput.join('');
-  const result = _wdlEvaluate(guess, s.word);
+  const guess      = s.currentInput.join('');           // packed, no spaces
+  const wordPacked = s.word.replace(/ /g,'');            // target, no spaces
+  const result     = _wdlEvaluate(guess, wordPacked);
 
   s.guesses.push({ guess, result });
   s.currentRow++;
@@ -1769,20 +1796,23 @@ function _wdlSubmitGuess(){
     else    { wdlStreak = 0; }
     _wdlSaveStreak();
     // Small delay so flip animation plays before result card appears
-    setTimeout(() => { _wdlRender(); _wdlUpdateStreakHdr(); }, wordLen * 80 + 350);
+    setTimeout(() => { _wdlRender(); _wdlUpdateStreakHdr(); }, letterLen * 80 + 350);
   } else {
     // Hint auto-unlock after guess 2 and 4
     if(s.guesses.length >= 2) s.hintsShown = Math.max(s.hintsShown, 1);
     if(s.guesses.length >= 4) s.hintsShown = Math.max(s.hintsShown, 2);
-    setTimeout(() => { _wdlRender(); }, wordLen * 80 + 50);
+    setTimeout(() => { _wdlRender(); }, letterLen * 80 + 50);
   }
 
-  // Immediately update committed tiles with flip (before full re-render)
+  // Immediately update committed tiles with flip animation (skip space tiles)
+  let letterIdx = 0;
   for(let c = 0; c < wordLen; c++){
+    if(s.word[c] === ' ') continue;
+    const li = letterIdx++;
     const tile = document.getElementById(`wdl-tile-${s.currentRow-1}-${c}`);
     if(!tile) continue;
-    tile.style.animationDelay = `${c*80}ms`;
-    tile.dataset.state = result[c];
+    tile.style.animationDelay = `${li*80}ms`;
+    tile.dataset.state = result[li];
     tile.classList.add('flip');
   }
 }
