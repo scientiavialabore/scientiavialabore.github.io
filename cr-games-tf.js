@@ -177,8 +177,8 @@ function _tfShowQuestion(){
 }
 
 // ── Timer ──────────────────────────────────────────────────────
-const TF_TOTAL_SECS    = 10;  // total time to answer
-const TF_DECAY_START   = 1;   // seconds before decay begins
+const TF_TOTAL_SECS    = 12;  // total time to answer
+const TF_DECAY_START   = 2;   // seconds before decay begins
 const TF_MAX_PTS       = 1000;
 const TF_MIN_PTS       = 100;
 
