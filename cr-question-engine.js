@@ -125,11 +125,23 @@ class QuestionEngine {
     const pick = (typeof weightedPick === 'function') ? weightedPick : (pool => { console.warn('[cr-question-engine] weightedPick not available — using randPick fallback'); return pool[Math.floor(Math.random() * pool.length)]; });
     const tmpl = forcedTemplate || pick(this.pool) || this.pool[Math.floor(Math.random() * this.pool.length)];
     const q    = generateVariant(tmpl) || { ...tmpl };
+
+    // Resolve letter answer (A/B/C/D) to full option text so grade() can
+    // compare opt === q.answer directly against shuffled option strings.
+    if (q.type === 'mc') {
+      const letterMap = { a: q.option_a, b: q.option_b, c: q.option_c, d: q.option_d };
+      const ans = String(q.answer || '').trim();
+      if (ans.length === 1 && letterMap[ans.toLowerCase()]) {
+        q.answer = letterMap[ans.toLowerCase()];
+      }
+    }
+
     this.template     = tmpl;
     this.currentQ     = q;
     this.answered     = false;
     this.selMC        = null;
     this._lastCorrect = false;
+    this._shuffledOpts = [];
     return q;
   }
 
@@ -145,6 +157,7 @@ class QuestionEngine {
     this.answered     = false;
     this.selMC        = null;
     this._lastCorrect = false;
+    this._shuffledOpts = [];
     if (this._container) this.render(this._container, this._renderOptions);
   }
 
@@ -284,9 +297,14 @@ class QuestionEngine {
       this._mcEl = mcEl;
 
       const rawOpts = q.options || [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean);
-      // Shuffle once per question; preserve order when re-rendering answered state
+      // Shuffle once per question (Fisher-Yates); preserve order when re-rendering answered state
       if (!answered) {
-        this._shuffledOpts = [...rawOpts].sort(() => Math.random() - 0.5);
+        const arr = [...rawOpts];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        this._shuffledOpts = arr;
       } else if (!this._shuffledOpts.length) {
         this._shuffledOpts = rawOpts;
       }
